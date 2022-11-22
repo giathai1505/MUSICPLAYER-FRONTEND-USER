@@ -1,14 +1,13 @@
-import request from "./axiosClient";
+import instance from "./axiosClient";
 
 class AuthAPI {
   login = (params) => {
-    const url = "/api/auth/login";
-    return request.post(url, params);
+    const url = "/auth/login";
+    return instance.post(url, params);
   };
   register = (params) => {
-    console.log(params);
-    const url = "/api/auth/register";
-    return request.post(url, params);
+    const url = "/auth/register";
+    return instance.post(url, params);
   };
 }
 
