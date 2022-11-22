@@ -13,12 +13,7 @@ export default function DefaultLayout({ children }) {
       <Sidebar />
       <div className={cx("main")}>
         <Header></Header>
-        <main className={cx("content")}>
-          <div className="col-md-9">{children}</div>
-          <div className="col-md-3">
-            <Playing />
-          </div>
-        </main>
+        <main className={cx("content")}>{children}</main>
       </div>
     </div>
   );

@@ -38,10 +38,35 @@
 }
 
 .player-image {
-  width: 100%;
-  height: 100%;
+  width: 150px;
+  position: fixed;
+  height: 150px;
   object-fit: cover;
   border-radius: inherit;
+  display: block;
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-moz-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.rotate {
+  -webkit-animation: spin 1s linear infinite;
+  -moz-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 .player-image.is-playing {
