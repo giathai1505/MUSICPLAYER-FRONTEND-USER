@@ -6,7 +6,7 @@
   align-items: center;
   right: 0;
   width: calc(100% - 300px);
-  z-index: 999999;
+  z-index: 9;
 }
 
 .userName {
@@ -52,7 +52,7 @@
   cursor: pointer;
   width: 180px;
   position: relative;
-  z-index: 999999900;
+  z-index: 9;
 }
 .user {
   position: relative;
@@ -70,7 +70,7 @@
   width: 180px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  z-index: 999999;
+  z-index: 9;
   &-item {
     list-style-type: none;
     padding: 10px 15px;
