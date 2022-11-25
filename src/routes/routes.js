@@ -58,7 +58,7 @@ const routePulic = [
     layout: "onlyLayout",
   },
   {
-    path: "/changePassword",
+    path: "/reset",
     component: ChangePassword,
     layout: "onlyLayout",
   },

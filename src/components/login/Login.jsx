@@ -45,7 +45,7 @@ export default function Login() {
         toast.error(result.message);
       }
     } catch (error) {
-      console.log('login error:', error);
+      toast.error(error.message);
     }
   };
 
@@ -53,7 +53,7 @@ export default function Login() {
     <>
       <div className={cx('login')}>
         <div className={cx('main')}>
-          <div className='p-5 flex items-center flex-col'>
+          <div className='flex items-center flex-col'>
             <div className='flex items-center flex-col'>
               <div className={cx('logo')}>
                 <img
@@ -61,8 +61,8 @@ export default function Login() {
                   alt='logo'
                 />
               </div>
-              <h3 className='text-md mb-4 text-white'>Melody For Emotion</h3>
-              <p className='text-[30px] font-normal text-white font-header mb-4'>
+              <h3 className='text-md mb-2 text-white'>Melody For Emotion</h3>
+              <p className='text-[30px] font-normal text-white font-header mb-2'>
                 LOGIN
               </p>
             </div>
@@ -74,13 +74,7 @@ export default function Login() {
               >
                 {({ errors, touched }) => (
                   <Form>
-                    <div className='flex flex-col gap-3'>
-                      {/* <Field
-                        className=""
-                        id="email"
-                        name="email"
-                        placeholder="jane@acme.com"
-                      /> */}
+                    <div className='flex flex-col gap-2'>
                       <Input
                         name='email'
                         placeholder='jane@acme.com'
@@ -94,6 +88,7 @@ export default function Login() {
                         id='password'
                         name='password'
                         placeholder='*******'
+                        type='password'
                       />
                       {errors.password && touched.password ? (
                         <div className='text-[#f23030]'>{errors.password}</div>
@@ -104,7 +99,7 @@ export default function Login() {
                       >
                         Submit
                       </button>
-                      <div className='flex justify-end mt-3'>
+                      <div className='flex justify-end mt-1'>
                         <Link
                           to='/forgotPassword'
                           className='text-lg text-primary'

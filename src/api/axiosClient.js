@@ -30,18 +30,19 @@ const instance = axios.create({
 })
 
 instance.interceptors.request.use(async (req) => {
-  let authTokens = localStorage.getItem("authTokens")
-    ? JSON.parse(localStorage.getItem("authTokens"))
+  let accessToken = localStorage.getItem("accessToken")
+    ? JSON.parse(localStorage.getItem("accessToken"))
     : null;
 
-  if (authTokens) {
-    req.headers.Authorization = `Bearer auth`;
+  if (accessToken) {
+    req.headers.Authorization = `Bearer ${accessToken}`;
   }
   return req;
 });
 
 instance.interceptors.response.use(
   (response) => {
+    console.log('RESPONSE', response)
     if (response && response.data) {
       return response.data;
     }
@@ -49,7 +50,7 @@ instance.interceptors.response.use(
   },
   (error) => {
     //handle error
-    throw error;
+    return error.response.data
   }
 );
 

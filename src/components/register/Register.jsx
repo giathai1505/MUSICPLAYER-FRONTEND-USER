@@ -41,7 +41,7 @@ export default function Register() {
         toast.error(result.message);
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.message);
     }
   };
 
@@ -70,7 +70,7 @@ export default function Register() {
               >
                 {({ errors, touched }) => (
                   <Form>
-                    <div className='flex flex-col gap-3'>
+                    <div className='flex flex-col gap-1'>
                       <Field
                         className='rounded-full px-3 py-2 bg-transparent border border-solid border-white text-white'
                         name='username'
@@ -107,25 +107,16 @@ export default function Register() {
                       ) : null}
                       <button
                         type='submit'
-                        className='px-[50px] py-[10px] rounded-full bg-primary text-white'
+                        className='px-[30px] py-[10px] rounded-full bg-primary text-white'
                       >
                         Register
                       </button>
-                      <div className='flex justify-end mt-3'>
-                        <Link
-                          to='/forgotPassword'
-                          className='text-lg text-primary'
-                          type='submit'
-                        >
-                          Forgot Password?
-                        </Link>
-                      </div>
                     </div>
                   </Form>
                 )}
               </Formik>
             </div>
-            <div className='text-lg flex mt-3 flex-col justify-center items-center gap-3 text-white'>
+            <div className='text-md flex mt-2 flex-col justify-center items-center gap-3 text-white'>
               <p>Or continue with</p>
               <button>
                 <img

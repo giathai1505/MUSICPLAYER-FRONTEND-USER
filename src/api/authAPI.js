@@ -9,6 +9,10 @@ class AuthAPI {
     const url = "/auth/register";
     return instance.post(url, params);
   };
+  forgotPassword = (params) => {
+    const url = '/user/forgot-password';
+    return instance.post(url, params)
+  }
 }
 
 const authAPI = new AuthAPI();
