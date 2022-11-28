@@ -6,7 +6,9 @@
   align-items: center;
   right: 0;
   width: calc(100% - 300px);
-  z-index: 9;
+
+  z-index: 1;
+
 }
 
 .userName {
@@ -70,7 +72,9 @@
   width: 180px;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  z-index: 9;
+
+  z-index: 1;
+
   &-item {
     list-style-type: none;
     padding: 10px 15px;

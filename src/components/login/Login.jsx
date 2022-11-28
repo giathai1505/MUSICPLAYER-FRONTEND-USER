@@ -13,8 +13,10 @@ import GoogleLogin from 'react-google-login';
 const cx = classNames.bind(styles);
 
 let initialValues = {
-  email: '',
-  password: '',
+
+  email: "thai@gmail.com",
+  password: "123",
+
 };
 
 const validationSchema = Yup.object({
@@ -37,13 +39,15 @@ export default function Login() {
     try {
       const result = await authAPI.login(values);
 
-      if (result.success) {
-        localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
-        toast.success(result.message);
-        navigate('/');
-      } else {
-        toast.error(result.message);
-      }
+
+      localStorage.setItem("userInfo", JSON.stringify(result.data.userInfo));
+      localStorage.setItem(
+        "accessToken",
+        JSON.stringify(result.data.accessToken)
+      );
+      toast.success("Login Successfully!");
+      navigate("/");
+
     } catch (error) {
       toast.error(error.message);
     }
@@ -74,7 +78,9 @@ export default function Login() {
               >
                 {({ errors, touched }) => (
                   <Form>
-                    <div className='flex flex-col gap-2'>
+
+                    <div className="flex flex-col gap-3">
+
                       <Input
                         name='email'
                         placeholder='jane@acme.com'

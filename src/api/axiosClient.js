@@ -1,35 +1,13 @@
-// import axios from "axios";
 
-// const request = axios.create({
-//   baseURL: "http://localhost:5000/",
-//   headers: {
-//     "Content-type": "application/json",
-//     "Access-Control-Allow-Origin": "*",
-//     "Access-Control-Allow-Methods": "POST,GET,LINK",
-//   },
-// });
-// // axiosClient.interceptors.request.use(async (req) => {
-// //   let authTokens = localStorage.getItem("authTokens")
-// //     ? JSON.parse(localStorage.getItem("authTokens"))
-// //     : null;
-
-// //   if (authTokens) {
-// //     req.headers.Authorization = `Bearer ${authTokens.accessToken}`;
-// //   }
-// //   return req;
-// // });
-
-
-
-// export default request;
 
 import axios from "axios";
 
-const instance = axios.create({
-  baseURL: "http://localhost:5000/api",
-})
 
-instance.interceptors.request.use(async (req) => {
+const request = axios.create({
+  baseURL: "http://localhost:5000/api",
+});
+
+request.interceptors.request.use(async (req) => {
   let accessToken = localStorage.getItem("accessToken")
     ? JSON.parse(localStorage.getItem("accessToken"))
     : null;
@@ -40,9 +18,10 @@ instance.interceptors.request.use(async (req) => {
   return req;
 });
 
-instance.interceptors.response.use(
+request.interceptors.response.use(
   (response) => {
-    console.log('RESPONSE', response)
+    console.log("RESPONSE", response);
+
     if (response && response.data) {
       return response.data;
     }
@@ -50,7 +29,9 @@ instance.interceptors.response.use(
   },
   (error) => {
     //handle error
-    return error.response.data
+
+    return error.response.data;
+
   }
 );
 
