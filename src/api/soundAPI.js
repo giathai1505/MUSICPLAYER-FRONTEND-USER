@@ -13,6 +13,11 @@ class SoundAPI {
     const url = "/user/get-favorite";
     return request.post(url, params);
   };
+
+  getListSound = (params) => {
+    const url = "/sound/sounds";
+    return request.post(url, params);
+  };
 }
 
 const soundAPI = new SoundAPI();
