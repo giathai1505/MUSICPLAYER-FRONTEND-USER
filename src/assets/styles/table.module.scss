@@ -1,32 +1,32 @@
 .table {
-  border-collapse: none;
-  width: 100%;
+  border-collapse: none !important;
+  width: 100% !important;
 }
 
 .table thead tr {
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid white !important;
 }
 
 .table thead td {
-  padding-bottom: 10px;
-  color: white;
+  padding-bottom: 10px !important;
+  color: white !important;
 }
 
 .table tbody td {
-  padding-top: 15px;
-  color: white;
-  vertical-align: center;
+  padding-top: 15px !important;
+  color: white !important;
+  vertical-align: center !important;
 }
 
 .table tbody tr {
-  vertical-align: center;
+  vertical-align: center !important;
 
   &:nth-child(odd) {
-    background-color: rgb(255, 255, 255, 30%);
+    background-color: rgb(255, 255, 255, 10%) !important;
   }
 }
 
 tbody td .icon {
-  font-size: 20px;
-  margin: 0 10px;
+  font-size: 20px !important;
+  margin: 0 10px !important;
 }

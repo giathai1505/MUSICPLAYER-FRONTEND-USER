@@ -13,10 +13,11 @@
 .ant-table-tbody > tr.ant-table-row:hover > td,
 .ant-table-tbody > tr > td.ant-table-cell-row-hover {
   background: rgba(162, 162, 162, 6) !important;
+  cursor: pointer;
 }
 
 .ant-table-tbody > tr.ant-table-row:nth-child(odd) {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 .ant-table-thead > tr > th,
 .ant-table-tbody > tr > td,
@@ -30,4 +31,8 @@
 .table > :not(caption) > * > * {
   /* padding: 0.5rem 0.5rem; */
   padding: 0 !important;
+}
+
+th.ant-table-cell.sttRow {
+  width: 55px !important;
 }

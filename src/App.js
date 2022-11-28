@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import publicRouter from "./routes/routes";
 import DefaultLayout from "./layout/defaultLayout/DefaultLayout";
 import Home from "./layout/Home/Home";
-import AuthAPI from "./api/authAPI";
 
 function App() {
   return (

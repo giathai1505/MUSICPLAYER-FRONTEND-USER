@@ -13,8 +13,8 @@ import "react-toastify/dist/ReactToastify.css";
 const cx = classNames.bind(styles);
 
 let initialValues = {
-  email: "19522133@gm.uit.edu.vn",
-  password: "1234",
+  email: "thai@gmail.com",
+  password: "123",
 };
 
 const validationSchema = Yup.object({
@@ -35,6 +35,7 @@ export default function Login() {
         values
       );
 
+      localStorage.setItem("userInfo", JSON.stringify(result.data.userInfo));
       localStorage.setItem(
         "accessToken",
         JSON.stringify(result.data.accessToken)
@@ -72,12 +73,6 @@ export default function Login() {
                 {({ errors, touched }) => (
                   <Form>
                     <div className="flex flex-col gap-3">
-                      {/* <Field
-                        className=""
-                        id="email"
-                        name="email"
-                        placeholder="jane@acme.com"
-                      /> */}
                       <Input
                         name="email"
                         placeholder="jane@acme.com"

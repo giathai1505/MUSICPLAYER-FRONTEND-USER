@@ -4,34 +4,51 @@ import styles from "./playing.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBackwardStep,
-  faCirclePlay,
   faForwardStep,
-  faPauseCircle,
-  faRepeat,
 } from "@fortawesome/free-solid-svg-icons";
+import { FaPause, FaPlay } from "react-icons/fa";
+import { CgRepeat } from "react-icons/cg";
+import { GiSpeakerOff, GiSpeaker } from "react-icons/gi";
+
+import { ConvertSecondToMinute } from "../../assets/function/string";
+
 const cx = classNames.bind(styles);
 
-export default function Playing({ song, onNext, onPrevious }) {
-  const [iconChange, setIconChange] = useState(faCirclePlay);
+export default function Playing({
+  song,
+  onNext,
+  onPrevious,
+  isPlay,
+  handlePlayPause,
+}) {
   const [timePercent, setTimePercent] = useState(0);
   const audioRef = useRef();
   const progressBarRef = useRef();
   const [duration, setDuration] = useState("");
   const [curTime, setCurTime] = useState("");
+  const [isRepeat, setIsRepeat] = useState(true);
+  const [volume, setVolume] = useState(1);
 
   useEffect(() => {
     onReset(song?.file);
+    try {
+      audioRef.current && isPlay
+        ? audioRef.current.play()
+        : audioRef.current.pause();
+    } catch (error) {
+      console.log(error);
+    }
+    setVolume(1);
   }, [song]);
 
   const handlePlaying = () => {
-    if (iconChange === faCirclePlay) {
-      setIconChange(faPauseCircle);
+    if (isPlay === false) {
       audioRef.current.play();
     }
-    if (iconChange === faPauseCircle) {
-      setIconChange(faCirclePlay);
+    if (isPlay === true) {
       audioRef.current.pause();
     }
+    handlePlayPause();
   };
 
   const handleUpdateProgressBar = () => {
@@ -44,7 +61,13 @@ export default function Playing({ song, onNext, onPrevious }) {
   };
 
   const handleEndAudio = () => {
-    onNext();
+    if (isRepeat) {
+      //handle repeat
+      audioRef.current.load();
+      audioRef.current.play();
+    } else {
+      onNext();
+    }
   };
 
   const handleClickProgressBar = (e) => {
@@ -58,11 +81,10 @@ export default function Playing({ song, onNext, onPrevious }) {
   const onReset = (src) => {
     if (audioRef.current) {
       audioRef.current.src = src;
+      audioRef.current.volume = 1;
 
       progressBarRef.current.value = 0;
       setTimePercent(0);
-      setIconChange(faCirclePlay);
-      handlePlaying();
       renderTime();
     }
   };
@@ -74,11 +96,14 @@ export default function Playing({ song, onNext, onPrevious }) {
   };
 
   const renderCurTime = () => {
-    const minutes = Math.floor(Math.floor(audioRef.current.currentTime) / 60);
-    const second = Math.floor(audioRef.current.currentTime) % 60;
-    const formatSecond = ("0" + second).slice(0, 2);
-    setCurTime(minutes + ":" + formatSecond);
+    setCurTime(ConvertSecondToMinute(audioRef.current.currentTime));
   };
+
+  const handleChangeVolume = (e) => {
+    audioRef.current.volume = e.target.value;
+    setVolume(e.target.value);
+  };
+
   return (
     <div className={cx("playing-song")}>
       {song ? (
@@ -94,12 +119,44 @@ export default function Playing({ song, onNext, onPrevious }) {
           </audio>
 
           <div className={cx("player-box")}>
-            <div className={cx("player-media")}>
+            <div className={cx("player-media", { rotate: isPlay })}>
               <img src={song.image} alt="" className={cx("player-image")} />
+
+              <div className="absolute flex justify-center items-center hover:cursor-pointer w-8 h-8 rounded-full border border-solid border-white left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+                {isPlay ? (
+                  <img
+                    src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif"
+                    alt=""
+                    className="w-4 h-4 "
+                  />
+                ) : (
+                  <FaPlay className="text-white" />
+                )}
+              </div>
             </div>
-            <h3 className={cx("song-title")}>{song.name}</h3>
-            <h3 className={cx("song-desc")}>{song.artist}</h3>
-            <p className={cx("song-lyric")}>No, lyric</p>
+            <div className="-rotate-90 absolute top-[80px] right-[-30px] flex">
+              {volume > 0 ? (
+                <GiSpeaker className="text-white text-[24px] rotate-90" />
+              ) : (
+                <GiSpeakerOff className="text-white text-[24px] rotate-90" />
+              )}
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.1"
+                value={volume}
+                id="rangeVolume"
+                className="bg-primary"
+                onChange={handleChangeVolume}
+              />
+            </div>
+            <div className="flex flex-col items-center text-white">
+              <p className="font-bold text-[16px]">{song.name}</p>
+              <p>{song.artist}</p>
+              <p>No, lyric</p>
+            </div>
+
             <div className={cx("progress")}>
               <input
                 type="range"
@@ -114,13 +171,15 @@ export default function Playing({ song, onNext, onPrevious }) {
             </div>
             <div className={cx("player-number")}>
               <span className="text-white">{curTime ? curTime : "0:00"}</span>
-              <td className="flex text-white gap-3">
-                <button class={cx("repeat", "btn-action")}>
-                  <FontAwesomeIcon
-                    icon={faRepeat}
-                    className={cx("icon")}
-                  ></FontAwesomeIcon>
-                </button>
+              <td className="flex text-white gap-3 items-center">
+                <CgRepeat
+                  onClick={() => setIsRepeat(!isRepeat)}
+                  className={
+                    isRepeat
+                      ? "text-[30px] text-yellow cursor-pointer"
+                      : "text-[30px] cursor-pointer"
+                  }
+                />
 
                 <button class={cx("back", "btn-action")}>
                   <FontAwesomeIcon
@@ -129,13 +188,13 @@ export default function Playing({ song, onNext, onPrevious }) {
                     onClick={onPrevious}
                   ></FontAwesomeIcon>
                 </button>
-                <button class={cx("play-song", "btn-action")}>
-                  <FontAwesomeIcon
-                    icon={iconChange}
-                    className={cx("icon")}
-                    onClick={handlePlaying}
-                  ></FontAwesomeIcon>
-                </button>
+                <div
+                  className="cursor-pointer text-[18px]"
+                  onClick={handlePlaying}
+                >
+                  {isPlay ? <FaPause /> : <FaPlay />}
+                </div>
+
                 <button class={cx("forward", "btn-action")}>
                   <FontAwesomeIcon
                     icon={faForwardStep}
