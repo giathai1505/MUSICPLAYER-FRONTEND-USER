@@ -1,4 +1,7 @@
+
+
 import axios from "axios";
+
 
 const request = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -18,6 +21,7 @@ request.interceptors.request.use(async (req) => {
 request.interceptors.response.use(
   (response) => {
     console.log("RESPONSE", response);
+
     if (response && response.data) {
       return response.data;
     }
@@ -25,8 +29,10 @@ request.interceptors.response.use(
   },
   (error) => {
     //handle error
+
     return error.response.data;
+
   }
 );
 
-export default request;
+export default instance
