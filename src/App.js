@@ -1,36 +1,49 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Routes } from "react-router-dom";
-import publicRouter from "./routes/routes";
 import DefaultLayout from "./layout/defaultLayout/DefaultLayout";
 import Music from "./pages/Music";
+import Login from "./pages/Auth/login/Login";
+import Sound from "./pages/Sound/sound";
+import Register from "./pages/Auth/register/Register";
+import Favorite from "./pages/Favorite";
+import ForgotPassword from "./pages/Auth/forgotPassword/ForgotPassword";
+import PrivateRoute from "./components/privateRoute";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        {publicRouter.map((route, idx) => {
-          let Page = Music;
-          let Layout = DefaultLayout;
-
-          if (route.layout === "onlyLayout") {
-            Layout = route.component;
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <DefaultLayout>
+                <Music />
+              </DefaultLayout>
+            </PrivateRoute>
           }
-          if (route.layout === null) {
-            Page = route.component;
+        />
+        <Route
+          path="/favorite"
+          element={
+            <DefaultLayout>
+              <Favorite />
+            </DefaultLayout>
           }
-
-          return (
-            <Route
-              key={idx}
-              path={route.path}
-              element={
-                <Layout>
-                  <Page></Page>
-                </Layout>
-              }
-            />
-          );
-        })}
+        />
+        <Route
+          path="/sound"
+          element={
+            <DefaultLayout>
+              <Sound />
+            </DefaultLayout>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="*" exact={true} element={<NotFound />} />
       </Routes>
     </div>
   );
