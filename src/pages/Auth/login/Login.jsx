@@ -37,10 +37,7 @@ export default function Login() {
     try {
       const result = await authAPI.login(values);
 
-      localStorage.setItem(
-        "userInfo",
-        JSON.stringify(result.data?.userInfo || {})
-      );
+      localStorage.setItem("userInfo", JSON.stringify(result.userInfo || {}));
       localStorage.setItem("accessToken", JSON.stringify(result.accessToken));
       toast.success("Login Successfully!");
       navigate("/");

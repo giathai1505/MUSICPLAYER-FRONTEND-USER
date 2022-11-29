@@ -51,6 +51,8 @@ export default function Music() {
     let userInfo = localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
       : {};
+
+    console.log(userInfo);
     setListFavorite(userInfo?.favorites || []);
   };
   useEffect(() => {

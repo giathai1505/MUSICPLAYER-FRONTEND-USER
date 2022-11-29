@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 
-import { FaPause, FaPlay, FaPlus } from "react-icons/fa";
+import { FaMinus, FaPause, FaPlay, FaPlus } from "react-icons/fa";
 
 import Playing from "../../components/playing/Playing";
 import { ConvertSecondToMinute } from "../../assets/function/string";
 import soundAPI from "../../api/soundAPI";
 import ConfirmDialog from "../Music/ConfirmDialog";
+import Dialog from "../../components/ConfirmDialog";
+import { toast } from "react-toastify";
 
 export default function Favorite() {
   const [listMusics, setListMusics] = useState([]);
@@ -35,14 +37,22 @@ export default function Favorite() {
   const getAllMusicsAPI = async () => {
     try {
       const result = await soundAPI.getListFavorite({});
-
       console.log(result);
-
       if (result.favorites) {
         setListMusics(result.favorites);
       }
     } catch (error) {
       console.log("login error:", error);
+    }
+  };
+
+  const removeFromFavorite = async (soundID) => {
+    try {
+      const result = await soundAPI.removeFromFavorite({ soundId: soundID });
+      localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
+      toast.success("Remove successfully!!");
+    } catch (error) {
+      toast.err("Err. Please try again!!");
     }
   };
 
@@ -61,9 +71,11 @@ export default function Favorite() {
     );
   };
 
-  const handleAddToFavorite = (record) => {
-    setIsShowConfirm(true);
-    setSelectedItemToAddToFavorite(record);
+  const handleRemoveFromFavorite = async () => {
+    setIsShowConfirm(false);
+
+    await removeFromFavorite(selectedItemToAddToFavorite._id);
+    await getAllMusicsAPI();
   };
 
   const columns = [
@@ -135,15 +147,21 @@ export default function Favorite() {
               <FaPlay />
             ))}
 
-          <FaPlus
+          <FaMinus
             className="cursor-pointer hover:scale-150"
-            onClick={() => handleAddToFavorite(record)}
+            onClick={() => {
+              setIsShowConfirm(true);
+              setSelectedItemToAddToFavorite(record);
+            }}
           />
         </div>
       ),
     },
   ];
 
+  const handleRemoveSuccess = () => {
+    setIsShowConfirm(false);
+  };
   return (
     <div className="grid grid-cols-3">
       <div className="col-span-2">
@@ -159,11 +177,21 @@ export default function Favorite() {
           handlePlayPause={() => setIsPlay(!isPlay)}
         />
       </div>
-      <ConfirmDialog
+      {/* <ConfirmDialog
         isShow={isShowConfirm}
         onCancel={() => setIsShowConfirm(false)}
         onSuccess={() => setIsShowConfirm(false)}
-        item={selectedItemToAddToFavorite}
+        item={selectedI
+          
+          temToAddToFavorite}
+      /> */}
+
+      <Dialog
+        isShow={isShowConfirm}
+        type="delete"
+        message={`Do you want to remove " ${selectedItemToAddToFavorite.name} " from your favorite list?`}
+        onCancel={() => setIsShowConfirm(false)}
+        onSuccess={handleRemoveFromFavorite}
       />
     </div>
   );
