@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
-import axios from "axios";
+
 import { FaPause, FaPlay, FaPlus } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 import Playing from "../../components/playing/Playing";
 import { ConvertSecondToMinute } from "../../assets/function/string";
-import ConfirmDialog from "../Home/ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
+import ConfirmDialog from "../Music/ConfirmDialog";
 
 export default function Favorite() {
   const [listMusics, setListMusics] = useState([]);
@@ -148,8 +147,8 @@ export default function Favorite() {
   return (
     <div className="grid grid-cols-3">
       <div className="col-span-2">
-        <h3 className="font-semibold text-white text-xl">LIST MUSIC</h3>
-        <Table columns={columns} dataSource={listMusics} />
+        <h3 className="font-semibold text-white text-xl">LIST FAVORITE</h3>
+        <Table columns={columns} dataSource={listMusics} pagination={false} />
       </div>
       <div className="col-span-1">
         <Playing

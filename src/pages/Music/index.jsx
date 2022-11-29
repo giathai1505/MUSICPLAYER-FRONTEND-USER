@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import axios from "axios";
-import { FaPause, FaPlay, FaPlus } from "react-icons/fa";
+import { FaPause, FaPlay } from "react-icons/fa";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 import Playing from "../../components/playing/Playing";
@@ -10,7 +10,7 @@ import ConfirmDialog from "./ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
 import { toast } from "react-toastify";
 
-export default function Home() {
+export default function Music() {
   const [listMusics, setListMusics] = useState([]);
   const [selectedSong, setSelectedSong] = useState();
   const [isShowConfirm, setIsShowConfirm] = useState(false);
@@ -18,7 +18,6 @@ export default function Home() {
     useState({});
   const [isPlay, setIsPlay] = useState(false);
   const [listFavorite, setListFavorite] = useState([]);
-  const [isTurnOnRandom, setIsTurnOnRandom] = useState(false);
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(
@@ -206,8 +205,9 @@ export default function Home() {
   return (
     <div className="grid grid-cols-3">
       <div className="col-span-2">
-        <h3 className="font-semibold text-white text-xl">LIST MUSIC</h3>
+        <h3 className="font-semibold text-white text-xl mb-2">LIST MUSIC</h3>
         <Table
+          pagination={false}
           columns={columns}
           dataSource={listMusics}
           onRow={(record, rowIndex) => {
@@ -224,7 +224,6 @@ export default function Home() {
           onPrevious={handleMovePrevious}
           isPlay={isPlay}
           handlePlayPause={() => setIsPlay((pre) => !pre)}
-          isRandom={isTurnOnRandom}
           onRandom={handleRandom}
         />
       </div>

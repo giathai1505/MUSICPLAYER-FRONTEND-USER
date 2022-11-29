@@ -1,15 +1,15 @@
-import Login from "./../components/login/Login";
-import Register from "./../components/register/Register";
-import ForgotPassword from "./../components/forgotPassword/ForgotPassword";
-import ChangePassword from "./../components/changePassword/ChangePassword";
 import DefaultLayout from "../layout/defaultLayout/DefaultLayout";
 import Service from "../layout/service/service";
-import Home from "../layout/Home/Home";
 import Timer from "../layout/timer/Timer";
-import Favorite from "./../layout/favorite/Favorite";
-import Sound from "./../layout/sound/sound";
 import Profile from "../layout/profile/Profile";
 import EditProfile from "./../layout/editProfile/EditProfile";
+import Music from "../pages/Music";
+import Favorite from "../pages/Favorite";
+import Sound from "../pages/Sound/sound";
+import Login from "../pages/Auth/login/Login";
+import Register from "../pages/Auth/register/Register";
+import ForgotPassword from "../pages/Auth/forgotPassword/ForgotPassword";
+import ChangePassword from "../pages/Auth/changePassword/ChangePassword";
 
 const routePulic = [
   {
@@ -18,7 +18,7 @@ const routePulic = [
   },
   {
     path: "/home",
-    component: Home,
+    component: Music,
     layout: null,
   },
   {
