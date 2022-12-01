@@ -5,6 +5,11 @@ class AuthAPI {
     const url = "/auth/login";
     return request.post(url, params);
   };
+
+  loginWithGoogle = (params) => {
+    const url = "/user/google-login";
+    return request.post(url, params);
+  };
   register = (params) => {
     const url = "/auth/register";
     return request.post(url, params);
