@@ -9,8 +9,10 @@ import Favorite from "./pages/Favorite";
 import ForgotPassword from "./pages/Auth/forgotPassword/ForgotPassword";
 import PrivateRoute from "./components/privateRoute";
 import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
 
 function App() {
+  document.title = "Melody for emotion";
   return (
     <div className="App">
       <Routes>
@@ -37,6 +39,14 @@ function App() {
           element={
             <DefaultLayout>
               <Sound />
+            </DefaultLayout>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <DefaultLayout>
+              <Profile />
             </DefaultLayout>
           }
         />

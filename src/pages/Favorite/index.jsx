@@ -177,14 +177,6 @@ export default function Favorite() {
           handlePlayPause={() => setIsPlay(!isPlay)}
         />
       </div>
-      {/* <ConfirmDialog
-        isShow={isShowConfirm}
-        onCancel={() => setIsShowConfirm(false)}
-        onSuccess={() => setIsShowConfirm(false)}
-        item={selectedI
-          
-          temToAddToFavorite}
-      /> */}
 
       <Dialog
         isShow={isShowConfirm}
