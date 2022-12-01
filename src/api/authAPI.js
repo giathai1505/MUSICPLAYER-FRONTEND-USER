@@ -6,8 +6,12 @@ class AuthAPI {
     return request.post(url, params);
   };
   register = (params) => {
-    console.log(params);
     const url = "/auth/register";
+    return request.post(url, params);
+  };
+
+  changePassword = (params) => {
+    const url = "/user/change-password";
     return request.post(url, params);
   };
 }

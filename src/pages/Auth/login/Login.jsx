@@ -14,16 +14,12 @@ const cx = classNames.bind(styles);
 
 let initialValues = {
   email: "thai@gmail.com",
-  password: "123",
+  password: "111",
 };
 
 const validationSchema = Yup.object({
   email: Yup.string().email().required("Enter your email"),
   password: Yup.string().required("Enter your password"),
-  // .matches(
-  //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-  //   'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
-  // ),
 });
 
 export default function Login() {
@@ -34,6 +30,7 @@ export default function Login() {
   };
 
   const handleSubmit = async (values) => {
+    console.log(values);
     try {
       const result = await authAPI.login(values);
 
@@ -80,13 +77,14 @@ export default function Login() {
                       {errors.email && touched.email ? (
                         <div className="text-[#f23030]">{errors.email}</div>
                       ) : null}
-                      <Field
-                        className="rounded-full outline-none text-white px-3 py-2 bg-transparent border border-solid border-white"
-                        id="password"
+
+                      <Input
                         name="password"
                         placeholder="*******"
+                        className="bg-transparent rounded-full outline-none text-white border-white px-3 py-2  border border-solid"
                         type="password"
                       />
+
                       {errors.password && touched.password ? (
                         <div className="text-[#f23030]">{errors.password}</div>
                       ) : null}

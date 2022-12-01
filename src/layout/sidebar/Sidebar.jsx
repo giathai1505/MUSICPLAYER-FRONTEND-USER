@@ -1,11 +1,22 @@
 import React from "react";
 import classNames from "classnames/bind";
 import styles from "./sidebar.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faLeaf, faMusic } from "@fortawesome/free-solid-svg-icons";
+import { BiLogOutCircle } from "react-icons/bi";
+
+import { FaRegUser } from "react-icons/fa";
+
 const cx = classNames.bind(styles);
 export default function Sidebar() {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("accessToken");
+
+    navigate("/login");
+  };
   return (
     <section className={cx("sidebar")}>
       <div className={cx("logo")}>
@@ -45,6 +56,20 @@ export default function Sidebar() {
             </Link>
           </li>
         </ul>
+      </div>
+      <div className="text-white flex flex-col gap-3 ml-5 absolute bottom-10 text-sm">
+        <Link to="/profile" className="flex items-center gap-2">
+          <FaRegUser />
+          <span>Profile</span>
+        </Link>
+
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={handleLogout}
+        >
+          <BiLogOutCircle />
+          <span>Log out</span>
+        </div>
       </div>
     </section>
   );
