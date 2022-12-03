@@ -9,6 +9,11 @@ import { ConvertSecondToMinute } from "../../assets/function/string";
 import ConfirmDialog from "./ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
 import { toast } from "react-toastify";
+import { BsPlusLg } from "react-icons/bs";
+
+import Dialog from "../../components/ConfirmDialog";
+import playlistAPI from "../../api/playlistAPI";
+import AddMusicToPlaylist from "./AddToPlaylistDialog";
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -18,6 +23,8 @@ export default function Music() {
     useState({});
   const [isPlay, setIsPlay] = useState(false);
   const [listFavorite, setListFavorite] = useState([]);
+  const [isShowAddToPlaylistDialog, setIsShowAddToPlaylistDialog] =
+    useState(false);
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(
@@ -90,6 +97,22 @@ export default function Music() {
     }
   };
 
+  const handleAddToPlaylistOk = async (record) => {
+    try {
+      const result = await playlistAPI.removeFromFavorite({
+        soundId: record._id,
+      });
+      console.log(result);
+
+      localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
+      getListFavoriteFromLocalStorage();
+      toast.success("Remove successfully !");
+    } catch (error) {
+      console.log(error);
+      toast.error("Err. Please try again!");
+    }
+  };
+
   const handleRowClick = (record) => {
     setSelectedSong(listMusics.find((item) => item._id === record._id));
   };
@@ -100,6 +123,11 @@ export default function Music() {
   };
 
   const handleRandom = () => {};
+
+  const handleAddToPlaylist = (record) => {
+    setIsShowAddToPlaylistDialog(true);
+    setSelectedItemToAddToFavorite(record);
+  };
 
   const columns = [
     {
@@ -146,14 +174,14 @@ export default function Music() {
         </div>
       ),
     },
-    {
-      title: "Artist",
-      dataIndex: "artist",
-      key: "artist",
-      render: (text, record, index) => (
-        <div className={checkActiveRow(index) && "text-[#FFC107]"}>{text}</div>
-      ),
-    },
+    // {
+    //   title: "Artist",
+    //   dataIndex: "artist",
+    //   key: "artist",
+    //   render: (text, record, index) => (
+    //     <div className={checkActiveRow(index) && "text-[#FFC107]"}>{text}</div>
+    //   ),
+    // },
     {
       title: "Time",
       dataIndex: "duration",
@@ -199,6 +227,10 @@ export default function Music() {
               onClick={() => handleAddToFavorite(record)}
             />
           )}
+          <BsPlusLg
+            className="cursor-pointer hover:scale-150"
+            onClick={() => handleAddToPlaylist(record)}
+          />
         </div>
       ),
     },
@@ -233,6 +265,13 @@ export default function Music() {
         isShow={isShowConfirm}
         onCancel={() => setIsShowConfirm(false)}
         onSuccess={handleDialogSuccess}
+        item={selectedItemToAddToFavorite}
+      />
+
+      <AddMusicToPlaylist
+        isShow={isShowAddToPlaylistDialog}
+        onCancel={() => setIsShowAddToPlaylistDialog(false)}
+        onSuccess={handleRemoveFromFavorite}
         item={selectedItemToAddToFavorite}
       />
     </div>
