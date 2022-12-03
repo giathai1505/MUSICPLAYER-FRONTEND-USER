@@ -209,9 +209,7 @@ export default function Playing({
 
           <div className={cx("player-tool")}></div>
         </>
-      ) : (
-        "loading"
-      )}
+      ) : null}
     </div>
   );
 }

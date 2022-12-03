@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import axios from "axios";
 import { FaPause, FaPlay } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart, AiOutlineSearch } from "react-icons/ai";
 
 import Playing from "../../components/playing/Playing";
 import { ConvertSecondToMinute } from "../../assets/function/string";
@@ -29,6 +29,7 @@ export default function Music() {
   const [isShowInitialQuestion, setIsShowInitialQuestion] = useState(true);
   const [selectedEmotions, setSelectedEmotions] = useState([]);
   const [isAnswerQuestion, setIsAnswerQuestion] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(
@@ -46,14 +47,12 @@ export default function Music() {
     setSelectedSong(listMusics[curIndex]);
   };
 
-  const getAllMusicsAPI = async () => {
+  const getAllMusicsAPI = async (text) => {
     try {
       const result = await soundAPI.getListMusic({
         emotionIds: selectedEmotions,
+        name: text,
       });
-
-      console.log(result);
-
       if (result.musics) {
         setListMusics(result.musics);
       }
@@ -79,7 +78,7 @@ export default function Music() {
   }, []);
 
   useEffect(() => {
-    getAllMusicsAPI();
+    getAllMusicsAPI(searchInput);
     getListFavoriteFromLocalStorage();
   }, [selectedEmotions]);
 
@@ -102,8 +101,6 @@ export default function Music() {
   const handleRemoveFromFavorite = async (record) => {
     try {
       const result = await soundAPI.removeFromFavorite({ soundId: record._id });
-      console.log(result);
-
       localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
       getListFavoriteFromLocalStorage();
       toast.success("Remove successfully !");
@@ -150,6 +147,10 @@ export default function Music() {
     setSelectedEmotions(emotions);
   };
 
+  const handleChangeSearchInput = async (e) => {
+    setSearchInput(e.target.value);
+    await getAllMusicsAPI(e.target.value);
+  };
   const columns = [
     {
       title: "#",
@@ -261,6 +262,18 @@ export default function Music() {
     <div className="grid grid-cols-3">
       <div className="col-span-2">
         <h3 className="font-semibold text-white text-xl mb-2">LIST MUSIC</h3>
+
+        <div className="flex  items-center w-[500px] bg-white pl-2 py-1 rounded-lg my-3">
+          <AiOutlineSearch className="text-[30px]" />
+          <input
+            type="text"
+            value={searchInput}
+            placeholder="Seach ..."
+            className="bg-transparent border-0 outline-none text-lg"
+            onChange={handleChangeSearchInput}
+          />
+        </div>
+
         <Table
           pagination={false}
           columns={columns}
@@ -272,16 +285,19 @@ export default function Music() {
           }}
         />
       </div>
-      <div className="col-span-1">
-        <Playing
-          song={selectedSong}
-          onNext={handleMoveNext}
-          onPrevious={handleMovePrevious}
-          isPlay={isPlay}
-          handlePlayPause={() => setIsPlay((pre) => !pre)}
-          onRandom={handleRandom}
-        />
-      </div>
+      {listMusics.length >= 0 ? (
+        <div className="col-span-1">
+          <Playing
+            song={selectedSong}
+            onNext={handleMoveNext}
+            onPrevious={handleMovePrevious}
+            isPlay={isPlay}
+            handlePlayPause={() => setIsPlay((pre) => !pre)}
+            onRandom={handleRandom}
+          />{" "}
+        </div>
+      ) : null}
+
       <ConfirmDialog
         isShow={isShowConfirm}
         onCancel={() => setIsShowConfirm(false)}
