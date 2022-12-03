@@ -10,6 +10,8 @@ import ForgotPassword from "./pages/Auth/forgotPassword/ForgotPassword";
 import PrivateRoute from "./components/privateRoute";
 import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
+import Playlist from "./pages/Playlist";
+import DetailPlaylist from "./pages/DetailPlaylist";
 
 function App() {
   document.title = "Melody for emotion";
@@ -47,6 +49,23 @@ function App() {
           element={
             <DefaultLayout>
               <Profile />
+            </DefaultLayout>
+          }
+        />
+        <Route
+          path="/playlist"
+          element={
+            <DefaultLayout>
+              <Playlist />
+            </DefaultLayout>
+          }
+        />
+
+        <Route
+          path="/playlist/:id"
+          element={
+            <DefaultLayout>
+              <DetailPlaylist />
             </DefaultLayout>
           }
         />

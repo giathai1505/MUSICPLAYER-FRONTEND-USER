@@ -46,3 +46,7 @@ table {
 th.ant-table-cell.sttRow {
   width: 55px !important;
 }
+
+input {
+  height: unset;
+}

@@ -55,6 +55,15 @@ export default function Sidebar() {
               <p>Favorite</p>
             </Link>
           </li>
+          <li className={cx("item")}>
+            <Link className={cx("link")} to="/playlist">
+              <FontAwesomeIcon
+                icon={faHeart}
+                className={cx("icon")}
+              ></FontAwesomeIcon>
+              <p>Playlist</p>
+            </Link>
+          </li>
         </ul>
       </div>
       <div className="text-white flex flex-col gap-3 ml-5 absolute bottom-10 text-sm">

@@ -43,7 +43,7 @@ const SoundItem = ({ sound }) => {
         <img
           src={sound.image}
           alt=""
-          className="w-full h-[200px] object-cover"
+          className="w-full h-[200px] object-contain rounded-lg"
         />
 
         {isHover ? (
