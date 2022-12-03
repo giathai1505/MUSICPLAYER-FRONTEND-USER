@@ -2,7 +2,7 @@
   height: calc(100vh - 70px);
 }
 .box {
-  width: 330px;
+  width: 385px;
   margin: 0 auto;
   background-color: #34224f;
   display: flex;
@@ -38,7 +38,7 @@
     font-weight: 600;
     letter-spacing: 3px;
     color: white;
-    font-size: 42px;
+    font-size: 30px;
     border: none;
     outline: none;
     background-color: transparent;
@@ -56,7 +56,7 @@
 .time-input {
   display: flex;
   justify-content: center;
-  width: 120px;
+  width: 140px;
   border-bottom: 3px solid #ccc;
 }
 .time-input.focus {

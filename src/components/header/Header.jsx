@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./header.module.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,15 +10,15 @@ import { toast } from "react-toastify";
 const cx = classNames.bind(styles);
 export default function Header() {
   const [isLogin, setIsLogin] = useState();
+  const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
 
-  const handleCloseInput = (e) => {
-    const iconClose = document.querySelector(`.${cx("icon-close")}`);
-    const inputText = document.querySelector(`.${cx("input-search")}`);
-
-    inputText.value = "";
-    iconClose.classList.remove(`${cx("active")}`);
-  };
+  useEffect(() => {
+    let userInfo = localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo"))
+      : {};
+    setUserInfo(userInfo);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -34,7 +34,7 @@ export default function Header() {
             <img
               src={require("./../../assets/images/icons8-clock 1.png")}
               alt=""
-              className={cx("lock")}
+              className="w-[50px]"
             />
           </Link>
           {isLogin ? (
@@ -47,32 +47,9 @@ export default function Header() {
             <div className={cx("authen")}>
               <div className={cx("user")}>
                 <div className={cx("avatar")}>
-                  <img
-                    src={require("./../../assets/images/Avatar-am-nhac.jpg")}
-                    alt=""
-                    className={cx("lock")}
-                  />
+                  <img src={userInfo.avatar} alt="" className={cx("lock")} />
                 </div>
-                <p className={cx("name")}>hongnhung</p>
-                <FontAwesomeIcon icon={faAngleDown}></FontAwesomeIcon>
-              </div>
-              <div className={cx("menu-user")}>
-                <ul className={cx("menu-user-list")}>
-                  <li className={cx("menu-user-item")}>
-                    <Link to="/profile" className={cx("menu-user-link")}>
-                      Xem hồ sơ
-                    </Link>
-                  </li>
-                  <li className={cx("menu-user-item")}>
-                    <Link
-                      className={cx("menu-user-link")}
-                      onClick={handleLogout}
-                      to="/login"
-                    >
-                      Logout
-                    </Link>
-                  </li>
-                </ul>
+                <p className={cx("name")}>{userInfo.username}</p>
               </div>
             </div>
           )}

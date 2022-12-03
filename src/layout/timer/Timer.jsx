@@ -107,7 +107,7 @@ export default function Timer() {
           <div className={cx("time-input")}>
             <div className={cx("control")} onClick={handleClickAddHour}>
               <input type="text" value={hour || "00"} />
-              <label htmlFor="">Hour</label>
+              <label htmlFor="">hour</label>
             </div>
             <div className={cx("time-option")}>
               {Hours.map((el, idx) => (
@@ -116,7 +116,7 @@ export default function Timer() {
                   className={cx("time-option-item")}
                   onClick={handleChooseHouse}
                 >
-                  {el.time} Hour
+                  {el.time} hours
                 </div>
               ))}
             </div>
@@ -125,7 +125,9 @@ export default function Timer() {
           <div className={cx("time-input")}>
             <div className={cx("control")} onClick={handleClickAddMinute}>
               <input type="text" value={minute || "00"} />
-              <label htmlFor="">Minute</label>
+              <label htmlFor="" className="text-xs">
+                minutes
+              </label>
             </div>
             <div className={cx("time-option")}>
               {Minute.map((el, idx) => (
@@ -134,14 +136,14 @@ export default function Timer() {
                   className={cx("time-option-item")}
                   onClick={handleChooseMinute}
                 >
-                  {el.time} Hour
+                  {el.time} minutes
                 </div>
               ))}
             </div>
           </div>
         </div>
         <h3 className={cx("desc")}>Choose the time to stop playing music</h3>
-        <Link className={cx("action")} to="/" onClick={handleSubmit}>
+        <Link className={cx("action")} to="/music" onClick={handleSubmit}>
           Save
         </Link>
       </div>

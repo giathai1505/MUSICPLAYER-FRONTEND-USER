@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Playlist from "./pages/Playlist";
 import DetailPlaylist from "./pages/DetailPlaylist";
+import Timer from "./layout/timer/Timer";
 
 function App() {
   document.title = "Melody for emotion";
@@ -19,7 +20,7 @@ function App() {
     <div className="App">
       <Routes>
         <Route
-          path="/"
+          path="/music"
           element={
             <PrivateRoute>
               <DefaultLayout>
@@ -66,6 +67,14 @@ function App() {
           element={
             <DefaultLayout>
               <DetailPlaylist />
+            </DefaultLayout>
+          }
+        />
+        <Route
+          path="/timer"
+          element={
+            <DefaultLayout>
+              <Timer />
             </DefaultLayout>
           }
         />
