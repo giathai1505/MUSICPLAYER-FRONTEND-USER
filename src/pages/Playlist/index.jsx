@@ -61,7 +61,7 @@ const Playlist = () => {
         );
       })}
       <div
-        className=" bg-primary h-[200px] flex items-center justify-center rounded-lg cursor-pointer opacity-60"
+        className="bg-secondary h-[200px] flex items-center justify-center rounded-lg opacity-40 cursor-pointer"
         onClick={() => setOpenAddPlaylistDialog(true)}
       >
         <BsPlusLg className="text-[30px] text-white opacity-100" />

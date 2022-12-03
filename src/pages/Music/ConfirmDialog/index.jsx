@@ -1,5 +1,4 @@
 import { Button, Modal } from "antd";
-import axios from "axios";
 import React from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { toast } from "react-toastify";
