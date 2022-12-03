@@ -7,13 +7,16 @@ import { faHeart, faLeaf, faMusic } from "@fortawesome/free-solid-svg-icons";
 import { BiLogOutCircle } from "react-icons/bi";
 
 import { FaRegUser } from "react-icons/fa";
+import { RiPlayList2Fill } from "react-icons/ri";
 
 const cx = classNames.bind(styles);
 export default function Sidebar() {
   const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("accessToken");
+    // localStorage.removeItem("isAnswerQuestion");
 
     navigate("/login");
   };
@@ -57,10 +60,7 @@ export default function Sidebar() {
           </li>
           <li className={cx("item")}>
             <Link className={cx("link")} to="/playlist">
-              <FontAwesomeIcon
-                icon={faHeart}
-                className={cx("icon")}
-              ></FontAwesomeIcon>
+              <RiPlayList2Fill />
               <p>Playlist</p>
             </Link>
           </li>

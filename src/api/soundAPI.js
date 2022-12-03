@@ -18,6 +18,16 @@ class SoundAPI {
     const url = "/sound/sounds";
     return request.post(url, params);
   };
+
+  getListMusic = (params) => {
+    const url = "/sound/musics";
+    return request.post(url, params);
+  };
+
+  getListEmotion = (params) => {
+    const url = "/emotion";
+    return request.post(url, params);
+  };
 }
 
 const soundAPI = new SoundAPI();

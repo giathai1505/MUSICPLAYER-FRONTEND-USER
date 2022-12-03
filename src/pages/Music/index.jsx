@@ -14,6 +14,7 @@ import { BsPlusLg } from "react-icons/bs";
 import Dialog from "../../components/ConfirmDialog";
 import playlistAPI from "../../api/playlistAPI";
 import AddMusicToPlaylist from "./AddToPlaylistDialog";
+import InitialEmotion from "./InitialEmotionDialog";
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -25,6 +26,9 @@ export default function Music() {
   const [listFavorite, setListFavorite] = useState([]);
   const [isShowAddToPlaylistDialog, setIsShowAddToPlaylistDialog] =
     useState(false);
+  const [isShowInitialQuestion, setIsShowInitialQuestion] = useState(true);
+  const [selectedEmotions, setSelectedEmotions] = useState([]);
+  const [isAnswerQuestion, setIsAnswerQuestion] = useState(true);
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(
@@ -44,10 +48,14 @@ export default function Music() {
 
   const getAllMusicsAPI = async () => {
     try {
-      const result = await axios.post("http://localhost:5000/api/sound/musics");
+      const result = await soundAPI.getListMusic({
+        emotionIds: selectedEmotions,
+      });
 
-      if (result.data.musics) {
-        setListMusics(result.data.musics);
+      console.log(result);
+
+      if (result.musics) {
+        setListMusics(result.musics);
       }
     } catch (error) {
       console.log("login error:", error);
@@ -59,13 +67,21 @@ export default function Music() {
       ? JSON.parse(localStorage.getItem("userInfo"))
       : {};
 
-    console.log(userInfo);
     setListFavorite(userInfo?.favorites || []);
   };
+
+  useEffect(() => {
+    let isAnswer = localStorage.getItem("isAnswerQuestion")
+      ? JSON.parse(localStorage.getItem("isAnswerQuestion"))
+      : false;
+
+    setIsAnswerQuestion(isAnswer);
+  }, []);
+
   useEffect(() => {
     getAllMusicsAPI();
     getListFavoriteFromLocalStorage();
-  }, []);
+  }, [selectedEmotions]);
 
   useEffect(() => {
     setSelectedSong(listMusics[0]);
@@ -102,8 +118,6 @@ export default function Music() {
       const result = await playlistAPI.removeFromFavorite({
         soundId: record._id,
       });
-      console.log(result);
-
       localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
       getListFavoriteFromLocalStorage();
       toast.success("Remove successfully !");
@@ -127,6 +141,13 @@ export default function Music() {
   const handleAddToPlaylist = (record) => {
     setIsShowAddToPlaylistDialog(true);
     setSelectedItemToAddToFavorite(record);
+  };
+
+  const handleChoseAnswerSuccess = (emotions) => {
+    //call api get list music
+    localStorage.setItem("isAnswerQuestion", JSON.stringify(false));
+    setIsShowInitialQuestion(false);
+    setSelectedEmotions(emotions);
   };
 
   const columns = [
@@ -274,6 +295,13 @@ export default function Music() {
         onSuccess={handleRemoveFromFavorite}
         item={selectedItemToAddToFavorite}
       />
+      {isAnswerQuestion ? (
+        <InitialEmotion
+          isShow={isShowInitialQuestion}
+          onCancel={() => setIsShowInitialQuestion(false)}
+          onOk={handleChoseAnswerSuccess}
+        />
+      ) : null}
     </div>
   );
 }
