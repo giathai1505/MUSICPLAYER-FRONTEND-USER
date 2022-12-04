@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "antd";
-import axios from "axios";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { AiOutlineHeart, AiFillHeart, AiOutlineSearch } from "react-icons/ai";
-
 import Playing from "../../components/playing/Playing";
 import { ConvertSecondToMinute } from "../../assets/function/string";
 import ConfirmDialog from "./ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
 import { toast } from "react-toastify";
 import { BsPlusLg } from "react-icons/bs";
-
-import Dialog from "../../components/ConfirmDialog";
-import playlistAPI from "../../api/playlistAPI";
 import AddMusicToPlaylist from "./AddToPlaylistDialog";
 import InitialEmotion from "./InitialEmotionDialog";
+import { Spin, Table } from "antd";
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -74,6 +69,11 @@ export default function Music() {
       ? JSON.parse(localStorage.getItem("isAnswerQuestion"))
       : false;
 
+    let emotions = localStorage.getItem("emotions")
+      ? JSON.parse(localStorage.getItem("emotions"))
+      : false;
+
+    setSelectedEmotions(emotions);
     setIsAnswerQuestion(isAnswer);
   }, []);
 
@@ -110,19 +110,19 @@ export default function Music() {
     }
   };
 
-  const handleAddToPlaylistOk = async (record) => {
-    try {
-      const result = await playlistAPI.removeFromFavorite({
-        soundId: record._id,
-      });
-      localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
-      getListFavoriteFromLocalStorage();
-      toast.success("Remove successfully !");
-    } catch (error) {
-      console.log(error);
-      toast.error("Err. Please try again!");
-    }
-  };
+  // const handleAddToPlaylistOk = async (record) => {
+  //   try {
+  //     const result = await playlistAPI.removeFromFavorite({
+  //       soundId: record._id,
+  //     });
+  //     localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
+  //     getListFavoriteFromLocalStorage();
+  //     toast.success("Remove successfully !");
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Err. Please try again!");
+  //   }
+  // };
 
   const handleRowClick = (record) => {
     setSelectedSong(listMusics.find((item) => item._id === record._id));
@@ -133,8 +133,6 @@ export default function Music() {
     getListFavoriteFromLocalStorage();
   };
 
-  const handleRandom = () => {};
-
   const handleAddToPlaylist = (record) => {
     setIsShowAddToPlaylistDialog(true);
     setSelectedItemToAddToFavorite(record);
@@ -143,6 +141,7 @@ export default function Music() {
   const handleChoseAnswerSuccess = (emotions) => {
     //call api get list music
     localStorage.setItem("isAnswerQuestion", JSON.stringify(false));
+    localStorage.setItem("emotions", JSON.stringify(emotions));
     setIsShowInitialQuestion(false);
     setSelectedEmotions(emotions);
   };
@@ -196,14 +195,7 @@ export default function Music() {
         </div>
       ),
     },
-    // {
-    //   title: "Artist",
-    //   dataIndex: "artist",
-    //   key: "artist",
-    //   render: (text, record, index) => (
-    //     <div className={checkActiveRow(index) && "text-[#FFC107]"}>{text}</div>
-    //   ),
-    // },
+
     {
       title: "Time",
       dataIndex: "duration",
@@ -293,8 +285,7 @@ export default function Music() {
             onPrevious={handleMovePrevious}
             isPlay={isPlay}
             handlePlayPause={() => setIsPlay((pre) => !pre)}
-            onRandom={handleRandom}
-          />{" "}
+          />
         </div>
       ) : null}
 
