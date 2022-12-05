@@ -16,6 +16,7 @@
     "bootstrap": "^5.2.2",
     "classnames": "^2.3.2",
     "dotenv": "^16.0.3",
+    "events": "^3.3.0",
     "formik": "^2.2.9",
     "gapi-script": "^1.2.0",
     "moment": "^2.29.4",

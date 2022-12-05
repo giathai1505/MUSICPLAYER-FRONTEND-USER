@@ -10,6 +10,7 @@ import { BsPlusLg } from "react-icons/bs";
 import AddMusicToPlaylist from "./AddToPlaylistDialog";
 import InitialEmotion from "./InitialEmotionDialog";
 import { Spin, Table } from "antd";
+import { ee } from "../../components/header/Header";
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -25,6 +26,13 @@ export default function Music() {
   const [selectedEmotions, setSelectedEmotions] = useState([]);
   const [isAnswerQuestion, setIsAnswerQuestion] = useState(true);
   const [searchInput, setSearchInput] = useState("");
+
+  ee.on("message", function (text) {
+    console.log("Dô hàm music");
+    if (isPlay) {
+      setIsPlay(false);
+    }
+  });
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(
@@ -109,20 +117,6 @@ export default function Music() {
       toast.error("Err. Please try again!");
     }
   };
-
-  // const handleAddToPlaylistOk = async (record) => {
-  //   try {
-  //     const result = await playlistAPI.removeFromFavorite({
-  //       soundId: record._id,
-  //     });
-  //     localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
-  //     getListFavoriteFromLocalStorage();
-  //     toast.success("Remove successfully !");
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error("Err. Please try again!");
-  //   }
-  // };
 
   const handleRowClick = (record) => {
     setSelectedSong(listMusics.find((item) => item._id === record._id));

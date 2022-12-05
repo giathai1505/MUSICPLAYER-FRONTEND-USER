@@ -8,6 +8,7 @@ import Dialog from "../../components/ConfirmDialog";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import playlistAPI from "../../api/playlistAPI";
+import { ee } from "../../components/header/Header";
 
 export default function DetailPlaylist() {
   let { id } = useParams();
@@ -19,6 +20,12 @@ export default function DetailPlaylist() {
 
   const [detailPlaylist, setDetailPlaylist] = useState({});
   const [isPlay, setIsPlay] = useState(false);
+
+  ee.on("message", function (text) {
+    if (isPlay) {
+      setIsPlay(false);
+    }
+  });
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(

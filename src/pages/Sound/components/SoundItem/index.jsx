@@ -2,12 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { FaPlay, FaPause } from "react-icons/fa";
 import { GiSpeaker, GiSpeakerOff } from "react-icons/gi";
+import { ee } from "../../../../components/header/Header";
 
 const SoundItem = ({ sound }) => {
   const [isHover, setIsHover] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
   const audioRef = useRef(null);
   const [volume, setVolume] = useState(1);
+
+  ee.on("message", function (text) {
+    audioRef.current.pause();
+  });
 
   useEffect(() => {
     if (isPlay) {

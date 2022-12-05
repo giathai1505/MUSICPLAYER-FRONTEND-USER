@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import playlistAPI from "../../api/playlistAPI";
+import { ee } from "../../components/header/Header";
 import AddPlaylistDialog from "./AddPlaylistDialog";
 
 const listColor = [
