@@ -6,11 +6,27 @@ import { ConvertSecondToMinute } from "../../assets/function/string";
 import ConfirmDialog from "./ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
 import { toast } from "react-toastify";
+import { Slide } from "react-slideshow-image";
 import { BsPlusLg } from "react-icons/bs";
 import AddMusicToPlaylist from "./AddToPlaylistDialog";
 import InitialEmotion from "./InitialEmotionDialog";
-import { Spin, Table } from "antd";
+import { Carousel, Spin, Table } from "antd";
 import { ee } from "../../components/header/Header";
+
+const slideImages = [
+  {
+    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/05/d/1/c/3/1670209013634.jpg",
+    caption: "Slide 1",
+  },
+  {
+    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/01/7/1/b/4/1669880759253.jpg",
+    caption: "Slide 2",
+  },
+  {
+    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/11/25/8/7/6/1/1669365019048.jpg",
+    caption: "Slide 3",
+  },
+];
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -245,64 +261,91 @@ export default function Music() {
   ];
 
   return (
-    <div className="grid grid-cols-3">
-      <div className="col-span-2">
-        <h3 className="font-semibold text-white text-xl mb-2">LIST MUSIC</h3>
+    <div>
+      <div className="grid grid-cols-3">
+        <div className="col-span-2">
+          <div className="mb-5">
+            <Carousel autoplay>
+              <div>
+                <img
+                  src="https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/05/d/1/c/3/1670209013634.jpg"
+                  alt=""
+                  className="rounded-lg"
+                />
+              </div>
+              <div>
+                <img
+                  src="https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/01/7/1/b/4/1669880759253.jpg"
+                  alt=""
+                  className="rounded-lg"
+                />
+              </div>
+              <div>
+                <img
+                  src="https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/11/25/8/7/6/1/1669365019048.jpg"
+                  alt=""
+                  className="rounded-lg"
+                />
+              </div>
+            </Carousel>
+          </div>
+          <h3 className="font-semibold text-white text-xl mb-2">LIST MUSIC</h3>
 
-        <div className="flex  items-center w-[500px] bg-white pl-2 py-1 rounded-lg my-3">
-          <AiOutlineSearch className="text-[30px]" />
-          <input
-            type="text"
-            value={searchInput}
-            placeholder="Seach ..."
-            className="bg-transparent border-0 outline-none text-lg"
-            onChange={handleChangeSearchInput}
+          <div className="flex  items-center w-[500px] bg-white pl-2 py-1 rounded-lg my-3">
+            <AiOutlineSearch className="text-[30px]" />
+            <input
+              type="text"
+              value={searchInput}
+              placeholder="Seach ..."
+              className="bg-transparent border-0 outline-none text-lg"
+              onChange={handleChangeSearchInput}
+            />
+          </div>
+
+          <Table
+            pagination={false}
+            columns={columns}
+            dataSource={listMusics}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: (event) => handleRowClick(record), // click row
+              };
+            }}
           />
         </div>
+        {listMusics.length >= 0 ? (
+          <div className="col-span-1">
+            <Playing
+              song={selectedSong}
+              onNext={handleMoveNext}
+              onPrevious={handleMovePrevious}
+              isPlay={isPlay}
+              handlePlayPause={() => setIsPlay((pre) => !pre)}
+            />
+          </div>
+        ) : null}
 
-        <Table
-          pagination={false}
-          columns={columns}
-          dataSource={listMusics}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event) => handleRowClick(record), // click row
-            };
-          }}
+        <ConfirmDialog
+          isShow={isShowConfirm}
+          onCancel={() => setIsShowConfirm(false)}
+          onSuccess={handleDialogSuccess}
+          item={selectedItemToAddToFavorite}
         />
+
+        <AddMusicToPlaylist
+          isShow={isShowAddToPlaylistDialog}
+          onCancel={() => setIsShowAddToPlaylistDialog(false)}
+          onSuccess={handleRemoveFromFavorite}
+          item={selectedItemToAddToFavorite}
+        />
+        {isAnswerQuestion ? (
+          <InitialEmotion
+            isShow={isShowInitialQuestion}
+            onCancel={() => setIsShowInitialQuestion(false)}
+            onOk={handleChoseAnswerSuccess}
+          />
+        ) : null}
       </div>
-      {listMusics.length >= 0 ? (
-        <div className="col-span-1">
-          <Playing
-            song={selectedSong}
-            onNext={handleMoveNext}
-            onPrevious={handleMovePrevious}
-            isPlay={isPlay}
-            handlePlayPause={() => setIsPlay((pre) => !pre)}
-          />
-        </div>
-      ) : null}
-
-      <ConfirmDialog
-        isShow={isShowConfirm}
-        onCancel={() => setIsShowConfirm(false)}
-        onSuccess={handleDialogSuccess}
-        item={selectedItemToAddToFavorite}
-      />
-
-      <AddMusicToPlaylist
-        isShow={isShowAddToPlaylistDialog}
-        onCancel={() => setIsShowAddToPlaylistDialog(false)}
-        onSuccess={handleRemoveFromFavorite}
-        item={selectedItemToAddToFavorite}
-      />
-      {isAnswerQuestion ? (
-        <InitialEmotion
-          isShow={isShowInitialQuestion}
-          onCancel={() => setIsShowInitialQuestion(false)}
-          onOk={handleChoseAnswerSuccess}
-        />
-      ) : null}
     </div>
   );
 }
