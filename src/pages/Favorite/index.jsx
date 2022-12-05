@@ -9,6 +9,7 @@ import soundAPI from "../../api/soundAPI";
 import ConfirmDialog from "../Music/ConfirmDialog";
 import Dialog from "../../components/ConfirmDialog";
 import { toast } from "react-toastify";
+import { ee } from "../../components/header/Header";
 
 export default function Favorite() {
   const [listMusics, setListMusics] = useState([]);
@@ -17,6 +18,12 @@ export default function Favorite() {
   const [selectedItemToAddToFavorite, setSelectedItemToAddToFavorite] =
     useState({});
   const [isPlay, setIsPlay] = useState(false);
+
+  ee.on("message", function (text) {
+    if (isPlay) {
+      setIsPlay(false);
+    }
+  });
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(

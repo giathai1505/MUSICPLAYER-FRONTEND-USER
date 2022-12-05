@@ -11,6 +11,7 @@ import { CgRepeat } from "react-icons/cg";
 import { GiSpeakerOff, GiSpeaker } from "react-icons/gi";
 
 import { ConvertSecondToMinute } from "../../assets/function/string";
+import { ee } from "../header/Header";
 
 const cx = classNames.bind(styles);
 
@@ -50,6 +51,13 @@ export default function Playing({
     }
     handlePlayPause();
   };
+
+  ee.on("message", function (text) {
+    console.log("Dô hàm playing");
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  });
 
   const handleUpdateProgressBar = () => {
     const duration = audioRef.current.duration;

@@ -13,9 +13,11 @@ import Profile from "./pages/Profile";
 import Playlist from "./pages/Playlist";
 import DetailPlaylist from "./pages/DetailPlaylist";
 import Timer from "./layout/timer/Timer";
+import { useEffect } from "react";
 
 function App() {
   document.title = "Melody for emotion";
+
   return (
     <div className="App">
       <Routes>
