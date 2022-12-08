@@ -87,13 +87,7 @@ export default function Header() {
               className="w-[50px]"
             />
           </div>
-          {isLogin ? (
-            <div className={cx("authen")}>
-              <Link to="/login" className={cx("btn-login")}>
-                Login
-              </Link>
-            </div>
-          ) : (
+          {userInfo.username ? (
             <div className={cx("authen")}>
               <div className={cx("user")}>
                 <div className={cx("avatar")}>
@@ -101,6 +95,12 @@ export default function Header() {
                 </div>
                 <p className={cx("name")}>{userInfo.username}</p>
               </div>
+            </div>
+          ) : (
+            <div className={cx("authen")}>
+              <Link to="/login" className={cx("btn-login")}>
+                Login
+              </Link>
             </div>
           )}
         </div>

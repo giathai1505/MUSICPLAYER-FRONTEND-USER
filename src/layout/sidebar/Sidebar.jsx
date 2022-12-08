@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./sidebar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,14 +8,20 @@ import { listMenu } from "./data";
 
 const cx = classNames.bind(styles);
 export default function Sidebar() {
+  const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
   let location = window.location.href;
+
+  useEffect(() => {
+    let userInfo = localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo"))
+      : {};
+    setUserInfo(userInfo);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("accessToken");
-    // localStorage.removeItem("isAnswerQuestion");
-
     navigate("/login");
   };
   return (
@@ -45,20 +51,22 @@ export default function Sidebar() {
           })}
         </div>
       </div>
-      <div className="text-white flex flex-col gap-3 ml-10 absolute bottom-10 text-lg font-header">
-        <Link to="/profile" className="flex items-center gap-3">
-          <FaRegUser />
-          <span>Profile</span>
-        </Link>
+      {userInfo.username ? (
+        <div className="text-white flex flex-col gap-3 ml-10 absolute bottom-10 text-lg font-header">
+          <Link to="/profile" className="flex items-center gap-3">
+            <FaRegUser />
+            <span>Profile</span>
+          </Link>
 
-        <div
-          className="flex items-center gap-3 cursor-pointer hover:text-primary"
-          onClick={handleLogout}
-        >
-          <BiLogOutCircle />
-          <span>Log out</span>
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:text-primary"
+            onClick={handleLogout}
+          >
+            <BiLogOutCircle />
+            <span>Log out</span>
+          </div>
         </div>
-      </div>
+      ) : null}
     </section>
   );
 }

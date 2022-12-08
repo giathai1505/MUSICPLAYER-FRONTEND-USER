@@ -22,13 +22,19 @@ function App() {
     <div className="App">
       <Routes>
         <Route
+          path="/"
+          element={
+            <DefaultLayout>
+              <Music />
+            </DefaultLayout>
+          }
+        />
+        <Route
           path="/music"
           element={
-            <PrivateRoute>
-              <DefaultLayout>
-                <Music />
-              </DefaultLayout>
-            </PrivateRoute>
+            <DefaultLayout>
+              <Music />
+            </DefaultLayout>
           }
         />
         <Route
