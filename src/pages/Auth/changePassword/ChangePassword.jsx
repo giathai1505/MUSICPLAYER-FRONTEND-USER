@@ -5,10 +5,12 @@ import classNames from "classnames/bind";
 import styles from "./ChangePassword.module.scss";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
-export default function Login() {
+export default function ChangePassword() {
   const [formData, setFormData] = useState({});
   const [username, setUsername] = useState(false);
   const navigate = useNavigate();
@@ -16,35 +18,41 @@ export default function Login() {
   const [searchParams, setSearchParams] = useSearchParams();
   const token = searchParams.get("token");
 
-  const {
-    values,
-    isValid,
-    dirty,
-    touched,
-    errors,
-    handleBlur,
-    handleChange,
-    handleSubmit,
-  } = useFormik({
-    initialValues: {
-      password: "",
-      confirmPassword: "",
-    },
-    validationSchema: Yup.object({
-      password: Yup.string()
-        .required("Please enter your password")
-        .matches(
-          /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,25}$/,
-          "Password must have at least 8 characters and contain at least one letter, one number and a special character"
-        ),
-      confirmPassword: Yup.string()
-        .required("Please enter your confirm password!")
-        .oneOf([Yup.ref("password"), null], "password must match"),
-    }),
-    onSubmit: async (value) => {
-      navigate("/login");
-    },
-  });
+  console.log(token);
+
+  const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        password: "",
+        confirmPassword: "",
+      },
+      validationSchema: Yup.object({
+        password: Yup.string().required("Please enter your password"),
+        confirmPassword: Yup.string()
+          .required("Please enter your confirm password!")
+          .oneOf([Yup.ref("password"), null], "password must match"),
+      }),
+      onSubmit: async (value) => {
+        try {
+          const result = axios.post(
+            "http://localhost:5000/api/user/reset-password",
+            {
+              password: value.password,
+            },
+            {
+              headers: {
+                Authorization: "Bearer " + token,
+              },
+            }
+          );
+
+          toast.success("Change password successfully!");
+          navigate("/login");
+        } catch (error) {
+          toast.success("Err. Please try again!");
+        }
+      },
+    });
 
   return (
     <>

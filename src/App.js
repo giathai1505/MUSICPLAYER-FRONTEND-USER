@@ -14,6 +14,7 @@ import Playlist from "./pages/Playlist";
 import DetailPlaylist from "./pages/DetailPlaylist";
 import Timer from "./layout/timer/Timer";
 import { useEffect } from "react";
+import ChangePassword from "./pages/Auth/changePassword/ChangePassword";
 
 function App() {
   document.title = "Melody for emotion";
@@ -87,6 +88,9 @@ function App() {
           }
         />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/reset" element={<ChangePassword />} />
+
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" exact={true} element={<NotFound />} />
