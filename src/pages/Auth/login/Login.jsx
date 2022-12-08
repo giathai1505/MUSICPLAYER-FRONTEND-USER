@@ -41,12 +41,11 @@ export default function Login() {
         tokenId: response.tokenId,
       });
 
-      console.log(result);
-      // localStorage.setItem("isAnswerQuestion", JSON.stringify(true));
-      // localStorage.setItem("userInfo", JSON.stringify(result.userInfo || {}));
-      // localStorage.setItem("accessToken", JSON.stringify(result.accessToken));
-      // toast.success("Login Successfully!");
-      // navigate("/");
+      localStorage.setItem("isAnswerQuestion", JSON.stringify(true));
+      localStorage.setItem("userInfo", JSON.stringify(result.userInfo || {}));
+      localStorage.setItem("accessToken", JSON.stringify(result.accessToken));
+      toast.success("Login Successfully!");
+      navigate("/");
     } catch (error) {
       toast.error(error.message);
     }
@@ -149,7 +148,6 @@ export default function Login() {
                 onSuccess={loginGoogle}
                 onFailure={loginGoogle}
                 cookiePolicy={"single_host_origin"}
-                isSignedIn={true}
               />
 
               <p className="">
