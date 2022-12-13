@@ -38,6 +38,7 @@ export default function Music() {
   const [listFavorite, setListFavorite] = useState([]);
   const [isShowAddToPlaylistDialog, setIsShowAddToPlaylistDialog] =
     useState(false);
+  const [listRank, setListRank] = useState([]);
   const [isShowInitialQuestion, setIsShowInitialQuestion] = useState(true);
   const [selectedEmotions, setSelectedEmotions] = useState([]);
   const [isAnswerQuestion, setIsAnswerQuestion] = useState(true);
@@ -80,6 +81,18 @@ export default function Music() {
     }
   };
 
+  const getAllRankMusicAPI = async (text) => {
+    try {
+      const result = await soundAPI.getListRank({});
+
+      if (result.musics) {
+        setListRank(result.musics);
+      }
+    } catch (error) {
+      console.log("login error:", error);
+    }
+  };
+
   const getListFavoriteFromLocalStorage = () => {
     let userInfo = localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
@@ -95,10 +108,11 @@ export default function Music() {
 
     let emotions = localStorage.getItem("emotions")
       ? JSON.parse(localStorage.getItem("emotions"))
-      : false;
+      : [];
 
     setSelectedEmotions(emotions);
     setIsAnswerQuestion(isAnswer);
+    getAllRankMusicAPI();
   }, []);
 
   useEffect(() => {
@@ -262,7 +276,7 @@ export default function Music() {
 
   return (
     <div>
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-3 gap-5">
         <div className="col-span-2">
           <div className="mb-5">
             <Carousel autoplay>
@@ -322,6 +336,28 @@ export default function Music() {
               isPlay={isPlay}
               handlePlayPause={() => setIsPlay((pre) => !pre)}
             />
+            <div className="ml-10 mt-5">
+              <h4 className="text-white text-[20px] mb-4 font-header font-medium">
+                Top hit
+              </h4>
+              <div className="flex flex-col gap-3">
+                {listRank.map((item) => {
+                  return (
+                    <div className="flex gap-2 text-white">
+                      <img
+                        src={item.image}
+                        className="w-10 h-10 object-cover rounded-lg"
+                        alt=""
+                      />
+                      <div>
+                        <p className="text-md">{item.name}</p>
+                        <p className="text-xs text-[#d8d8d8]">{item.artist}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         ) : null}
 
