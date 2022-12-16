@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import classNames from "classnames/bind";
-import styles from "./playing.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useRef, useState } from 'react';
+import classNames from 'classnames/bind';
+import styles from './playing.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBackwardStep,
   faForwardStep,
-} from "@fortawesome/free-solid-svg-icons";
-import { FaPause, FaPlay } from "react-icons/fa";
-import { CgRepeat } from "react-icons/cg";
-import { GiSpeakerOff, GiSpeaker } from "react-icons/gi";
+} from '@fortawesome/free-solid-svg-icons';
+import { FaPause, FaPlay } from 'react-icons/fa';
+import { CgRepeat } from 'react-icons/cg';
+import { GiSpeakerOff, GiSpeaker } from 'react-icons/gi';
 
-import { ConvertSecondToMinute } from "../../assets/function/string";
-import { ee } from "../header/Header";
+import { ConvertSecondToMinute } from '../../assets/function/string';
+import { ee } from '../header/Header';
 
 const cx = classNames.bind(styles);
 
@@ -25,8 +25,8 @@ export default function Playing({
   const [timePercent, setTimePercent] = useState(0);
   const audioRef = useRef();
   const progressBarRef = useRef();
-  const [duration, setDuration] = useState("");
-  const [curTime, setCurTime] = useState("");
+  const [duration, setDuration] = useState('');
+  const [curTime, setCurTime] = useState('');
   const [isRepeat, setIsRepeat] = useState(true);
   const [volume, setVolume] = useState(1);
 
@@ -52,8 +52,7 @@ export default function Playing({
     handlePlayPause();
   };
 
-  ee.on("message", function (text) {
-    console.log("Dô hàm playing");
+  ee.on('message', function (text) {
     if (audioRef.current) {
       audioRef.current.pause();
     }
@@ -100,7 +99,7 @@ export default function Playing({
   const renderTime = () => {
     const minutes = Math.floor(Math.floor(song.duration) / 60);
     const second = Math.floor(song.duration) % 60;
-    setDuration(minutes + ":" + second);
+    setDuration(minutes + ':' + second);
   };
 
   const renderCurTime = () => {
@@ -113,109 +112,109 @@ export default function Playing({
   };
 
   return (
-    <div className={cx("playing-song")}>
+    <div className={cx('playing-song')}>
       {song ? (
         <>
           <audio
-            controls="controls"
+            controls='controls'
             ref={audioRef}
-            className="hidden"
+            className='hidden'
             onTimeUpdate={handleUpdateProgressBar}
             onEnded={handleEndAudio}
           >
-            <source src={song.file} type="audio/mpeg" />
+            <source src={song.file} type='audio/mpeg' />
           </audio>
 
-          <div className={cx("player-box")}>
-            <div className={cx("player-media", { rotate: isPlay })}>
-              <img src={song.image} alt="" className={cx("player-image")} />
+          <div className={cx('player-box')}>
+            <div className={cx('player-media', { rotate: isPlay })}>
+              <img src={song.image} alt='' className={cx('player-image')} />
 
-              <div className="absolute flex justify-center items-center hover:cursor-pointer w-8 h-8 rounded-full border border-solid border-white left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">
+              <div className='absolute flex justify-center items-center hover:cursor-pointer w-8 h-8 rounded-full border border-solid border-white left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]'>
                 {isPlay ? (
                   <img
-                    src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif"
-                    alt=""
-                    className="w-4 h-4 "
+                    src='https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif'
+                    alt=''
+                    className='w-4 h-4 '
                   />
                 ) : (
-                  <FaPlay className="text-white" />
+                  <FaPlay className='text-white' />
                 )}
               </div>
             </div>
-            <div className="-rotate-90 absolute top-[80px] right-[-30px] flex">
+            <div className='-rotate-90 absolute top-[80px] right-[-30px] flex'>
               {volume > 0 ? (
-                <GiSpeaker className="text-white text-[24px] rotate-90" />
+                <GiSpeaker className='text-white text-[24px] rotate-90' />
               ) : (
-                <GiSpeakerOff className="text-white text-[24px] rotate-90" />
+                <GiSpeakerOff className='text-white text-[24px] rotate-90' />
               )}
               <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.1"
+                type='range'
+                min='0'
+                max='1'
+                step='0.1'
                 value={volume}
-                id="rangeVolume"
-                className="bg-primary"
+                id='rangeVolume'
+                className='bg-primary'
                 onChange={handleChangeVolume}
               />
             </div>
-            <div className="flex flex-col items-center text-white">
-              <p className="font-bold text-[16px]">{song.name}</p>
+            <div className='flex flex-col items-center text-white'>
+              <p className='font-bold text-[16px]'>{song.name}</p>
               <p>{song.artist}</p>
               <p>No, lyric</p>
             </div>
 
-            <div className={cx("progress")}>
+            <div className={cx('progress')}>
               <input
-                type="range"
-                id="progress-bar"
-                min="0"
-                max="100"
+                type='range'
+                id='progress-bar'
+                min='0'
+                max='100'
                 ref={progressBarRef}
                 value={timePercent || 0}
-                className={cx("bar")}
+                className={cx('bar')}
                 onClick={(e) => handleClickProgressBar(e)}
               />
             </div>
-            <div className={cx("player-number")}>
-              <span className="text-white">{curTime ? curTime : "0:00"}</span>
-              <td className="flex text-white gap-3 items-center">
+            <div className={cx('player-number')}>
+              <span className='text-white'>{curTime ? curTime : '0:00'}</span>
+              <td className='flex text-white gap-3 items-center'>
                 <CgRepeat
                   onClick={() => setIsRepeat(!isRepeat)}
                   className={
                     isRepeat
-                      ? "text-[30px] text-yellow cursor-pointer"
-                      : "text-[30px] cursor-pointer"
+                      ? 'text-[30px] text-yellow cursor-pointer'
+                      : 'text-[30px] cursor-pointer'
                   }
                 />
 
-                <button class={cx("back", "btn-action")}>
+                <button class={cx('back', 'btn-action')}>
                   <FontAwesomeIcon
                     icon={faBackwardStep}
-                    className={cx("icon")}
+                    className={cx('icon')}
                     onClick={onPrevious}
                   ></FontAwesomeIcon>
                 </button>
                 <div
-                  className="cursor-pointer text-[18px]"
+                  className='cursor-pointer text-[18px]'
                   onClick={handlePlaying}
                 >
                   {isPlay ? <FaPause /> : <FaPlay />}
                 </div>
 
-                <button class={cx("forward", "btn-action")}>
+                <button class={cx('forward', 'btn-action')}>
                   <FontAwesomeIcon
                     icon={faForwardStep}
-                    className={cx("icon")}
+                    className={cx('icon')}
                     onClick={onNext}
                   ></FontAwesomeIcon>
                 </button>
               </td>
-              <span className="text-white">{duration ? duration : "0:00"}</span>
+              <span className='text-white'>{duration ? duration : '0:00'}</span>
             </div>
           </div>
 
-          <div className={cx("player-tool")}></div>
+          <div className={cx('player-tool')}></div>
         </>
       ) : null}
     </div>
