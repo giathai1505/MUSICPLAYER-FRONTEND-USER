@@ -41,9 +41,11 @@ function App() {
         <Route
           path="/favorite"
           element={
-            <DefaultLayout>
+            <PrivateRoute>
+              <DefaultLayout>
               <Favorite />
             </DefaultLayout>
+            </PrivateRoute>
           }
         />
         <Route
@@ -57,34 +59,42 @@ function App() {
         <Route
           path="/profile"
           element={
-            <DefaultLayout>
+            <PrivateRoute>
+              <DefaultLayout>
               <Profile />
             </DefaultLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/playlist"
           element={
-            <DefaultLayout>
+            <PrivateRoute>
+              <DefaultLayout>
               <Playlist />
             </DefaultLayout>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/playlist/:id"
           element={
-            <DefaultLayout>
+            <PrivateRoute>
+              <DefaultLayout>
               <DetailPlaylist />
             </DefaultLayout>
+            </PrivateRoute>
           }
         />
         <Route
           path="/timer"
           element={
-            <DefaultLayout>
+            <PrivateRoute>
+              <DefaultLayout>
               <Timer />
             </DefaultLayout>
+            </PrivateRoute>
           }
         />
         <Route path="/login" element={<Login />} />
