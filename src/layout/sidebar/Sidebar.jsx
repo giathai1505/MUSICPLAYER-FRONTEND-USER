@@ -1,85 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./sidebar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faLeaf, faMusic } from "@fortawesome/free-solid-svg-icons";
 import { BiLogOutCircle } from "react-icons/bi";
-
 import { FaRegUser } from "react-icons/fa";
+import { listMenu } from "./data";
 
 const cx = classNames.bind(styles);
 export default function Sidebar() {
+  const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
+  let location = window.location.href;
+
+  useEffect(() => {
+    let userInfo = localStorage.getItem("userInfo")
+      ? JSON.parse(localStorage.getItem("userInfo"))
+      : {};
+    setUserInfo(userInfo);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("accessToken");
-
     navigate("/login");
   };
   return (
     <section className={cx("sidebar")}>
-      <div className={cx("logo")}>
+      <div className="flex flex-col gap-2 justify-center items-center mt-5">
         <img
           src={require("./../../assets/images/Logo-Offical-gadient.png")}
           alt="logo"
+          className="w-[100px]"
         ></img>
-        <p>Melody for emotion</p>
+        <p className="text-white">Melody for emotion</p>
       </div>
       <div className={cx("inner")}>
-        <ul className={cx("list")}>
-          <li className={cx("item")}>
-            <Link className={cx("link")} to="/">
-              <FontAwesomeIcon
-                icon={faMusic}
-                className={cx("icon")}
-              ></FontAwesomeIcon>
-              <p className={cx("text")}>Music</p>
-            </Link>
-          </li>
-          <li className={cx("item")}>
-            <Link className={cx("link")} to="/Sound">
-              <FontAwesomeIcon
-                icon={faLeaf}
-                className={cx("icon")}
-              ></FontAwesomeIcon>
-              <p className={cx("text")}>Sound</p>
-            </Link>
-          </li>
-          <li className={cx("item")}>
-            <Link className={cx("link")} to="/favorite">
-              <FontAwesomeIcon
-                icon={faHeart}
-                className={cx("icon")}
-              ></FontAwesomeIcon>
-              <p>Favorite</p>
-            </Link>
-          </li>
-          <li className={cx("item")}>
-            <Link className={cx("link")} to="/playlist">
-              <FontAwesomeIcon
-                icon={faHeart}
-                className={cx("icon")}
-              ></FontAwesomeIcon>
-              <p>Playlist</p>
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <div className="text-white flex flex-col gap-3 ml-5 absolute bottom-10 text-sm">
-        <Link to="/profile" className="flex items-center gap-2">
-          <FaRegUser />
-          <span>Profile</span>
-        </Link>
-
-        <div
-          className="flex items-center gap-2 cursor-pointer"
-          onClick={handleLogout}
-        >
-          <BiLogOutCircle />
-          <span>Log out</span>
+        <div className="flex flex-col text-white">
+          {listMenu.map((item) => {
+            return (
+              <Link
+                to={item.path}
+                className={`flex gap-3 text-[18px] items-center font-header hover:text-primary pl-10 py-3 ${
+                  location.includes(item.path) ? "bg-primary" : ""
+                }`}
+              >
+                {item.icon}
+                <span>{item.title}</span>
+              </Link>
+            );
+          })}
         </div>
       </div>
+      {userInfo.username ? (
+        <div className="text-white flex flex-col gap-3 ml-10 absolute bottom-10 text-lg font-header">
+          <Link to="/profile" className="flex items-center gap-3">
+            <FaRegUser />
+            <span>Profile</span>
+          </Link>
+
+          <div
+            className="flex items-center gap-3 cursor-pointer hover:text-primary"
+            onClick={handleLogout}
+          >
+            <BiLogOutCircle />
+            <span>Log out</span>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

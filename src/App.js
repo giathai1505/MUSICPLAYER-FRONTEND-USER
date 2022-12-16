@@ -12,20 +12,30 @@ import NotFound from "./pages/NotFound";
 import Profile from "./pages/Profile";
 import Playlist from "./pages/Playlist";
 import DetailPlaylist from "./pages/DetailPlaylist";
+import Timer from "./layout/timer/Timer";
+import { useEffect } from "react";
+import ChangePassword from "./pages/Auth/changePassword/ChangePassword";
 
 function App() {
   document.title = "Melody for emotion";
+
   return (
     <div className="App">
       <Routes>
         <Route
           path="/"
           element={
-            <PrivateRoute>
-              <DefaultLayout>
-                <Music />
-              </DefaultLayout>
-            </PrivateRoute>
+            <DefaultLayout>
+              <Music />
+            </DefaultLayout>
+          }
+        />
+        <Route
+          path="/music"
+          element={
+            <DefaultLayout>
+              <Music />
+            </DefaultLayout>
           }
         />
         <Route
@@ -69,7 +79,18 @@ function App() {
             </DefaultLayout>
           }
         />
+        <Route
+          path="/timer"
+          element={
+            <DefaultLayout>
+              <Timer />
+            </DefaultLayout>
+          }
+        />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgotPassword" element={<ForgotPassword />} />
+        <Route path="/reset" element={<ChangePassword />} />
+
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="*" exact={true} element={<NotFound />} />

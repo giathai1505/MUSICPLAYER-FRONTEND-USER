@@ -135,3 +135,7 @@
   pointer-events: visible;
   cursor: pointer !important;
 }
+
+div.ant-modal-content {
+  height: 0 !important;
+}

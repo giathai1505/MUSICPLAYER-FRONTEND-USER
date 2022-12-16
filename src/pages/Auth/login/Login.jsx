@@ -13,6 +13,9 @@ import authAPI from "../../../api/authAPI";
 
 const cx = classNames.bind(styles);
 
+const clientId =
+  "802827576027-s1apjbcnuqsefsnu1jpn6ihng1oevta4.apps.googleusercontent.com";
+
 let initialValues = {
   email: "thai@gmail.com",
   password: "111",
@@ -35,8 +38,10 @@ export default function Login() {
     try {
       cleanLocalStorage();
       const result = await authAPI.loginWithGoogle({
-        tokenId: response.accessToken,
+        tokenId: response.tokenId,
       });
+
+      localStorage.setItem("isAnswerQuestion", JSON.stringify(true));
       localStorage.setItem("userInfo", JSON.stringify(result.userInfo || {}));
       localStorage.setItem("accessToken", JSON.stringify(result.accessToken));
       toast.success("Login Successfully!");
@@ -46,22 +51,6 @@ export default function Login() {
     }
   };
 
-  const handleSubmit = async (values) => {
-    try {
-      cleanLocalStorage();
-      const result = await authAPI.login(values);
-
-      localStorage.setItem("userInfo", JSON.stringify(result.userInfo || {}));
-      localStorage.setItem("accessToken", JSON.stringify(result.accessToken));
-      toast.success("Login Successfully!");
-      navigate("/");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  const clientId =
-    "802827576027-s1apjbcnuqsefsnu1jpn6ihng1oevta4.apps.googleusercontent.com";
   useEffect(() => {
     const initClient = () => {
       gapi.client.init({
@@ -70,7 +59,22 @@ export default function Login() {
       });
     };
     gapi.load("client:auth2", initClient);
-  });
+  }, []);
+
+  const handleSubmit = async (values) => {
+    try {
+      cleanLocalStorage();
+      const result = await authAPI.login(values);
+      localStorage.setItem("isAnswerQuestion", JSON.stringify(true));
+      localStorage.setItem("userInfo", JSON.stringify(result.userInfo || {}));
+      localStorage.setItem("accessToken", JSON.stringify(result.accessToken));
+
+      toast.success("Login Successfully!");
+      navigate("/music");
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return (
     <>
@@ -144,7 +148,6 @@ export default function Login() {
                 onSuccess={loginGoogle}
                 onFailure={loginGoogle}
                 cookiePolicy={"single_host_origin"}
-                isSignedIn={true}
               />
 
               <p className="">

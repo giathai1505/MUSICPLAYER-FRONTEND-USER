@@ -19,6 +19,16 @@ class AuthAPI {
     const url = "/user/change-password";
     return request.post(url, params);
   };
+
+  forgotPassword = (params) => {
+    const url = "/user/forgot-password";
+    return request.post(url, params);
+  };
+
+  resetPassword = (params) => {
+    const url = "/user/reset-password";
+    return request.post(url, params);
+  };
 }
 
 const authAPI = new AuthAPI();

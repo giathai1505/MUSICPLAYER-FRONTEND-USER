@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
-import axios from "axios";
 import { FaPause, FaPlay } from "react-icons/fa";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-
+import { AiOutlineHeart, AiFillHeart, AiOutlineSearch } from "react-icons/ai";
 import Playing from "../../components/playing/Playing";
 import { ConvertSecondToMinute } from "../../assets/function/string";
 import ConfirmDialog from "./ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
 import { toast } from "react-toastify";
+import { Slide } from "react-slideshow-image";
 import { BsPlusLg } from "react-icons/bs";
-
-import Dialog from "../../components/ConfirmDialog";
-import playlistAPI from "../../api/playlistAPI";
 import AddMusicToPlaylist from "./AddToPlaylistDialog";
+import InitialEmotion from "./InitialEmotionDialog";
+import { Carousel, Spin, Table } from "antd";
+import { ee } from "../../components/header/Header";
+
+const slideImages = [
+  {
+    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/05/d/1/c/3/1670209013634.jpg",
+    caption: "Slide 1",
+  },
+  {
+    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/01/7/1/b/4/1669880759253.jpg",
+    caption: "Slide 2",
+  },
+  {
+    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/11/25/8/7/6/1/1669365019048.jpg",
+    caption: "Slide 3",
+  },
+];
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -25,6 +38,18 @@ export default function Music() {
   const [listFavorite, setListFavorite] = useState([]);
   const [isShowAddToPlaylistDialog, setIsShowAddToPlaylistDialog] =
     useState(false);
+  const [listRank, setListRank] = useState([]);
+  const [isShowInitialQuestion, setIsShowInitialQuestion] = useState(true);
+  const [selectedEmotions, setSelectedEmotions] = useState([]);
+  const [isAnswerQuestion, setIsAnswerQuestion] = useState(true);
+  const [searchInput, setSearchInput] = useState("");
+
+  ee.on("message", function (text) {
+    console.log("Dô hàm music");
+    if (isPlay) {
+      setIsPlay(false);
+    }
+  });
 
   const handleMoveNext = () => {
     let curIndex = listMusics.findIndex(
@@ -42,12 +67,26 @@ export default function Music() {
     setSelectedSong(listMusics[curIndex]);
   };
 
-  const getAllMusicsAPI = async () => {
+  const getAllMusicsAPI = async (text) => {
     try {
-      const result = await axios.post("http://localhost:5000/api/sound/musics");
+      const result = await soundAPI.getListMusic({
+        emotionIds: selectedEmotions,
+        name: text,
+      });
+      if (result.musics) {
+        setListMusics(result.musics);
+      }
+    } catch (error) {
+      console.log("login error:", error);
+    }
+  };
 
-      if (result.data.musics) {
-        setListMusics(result.data.musics);
+  const getAllRankMusicAPI = async (text) => {
+    try {
+      const result = await soundAPI.getListRank({});
+
+      if (result.musics) {
+        setListRank(result.musics);
       }
     } catch (error) {
       console.log("login error:", error);
@@ -59,13 +98,27 @@ export default function Music() {
       ? JSON.parse(localStorage.getItem("userInfo"))
       : {};
 
-    console.log(userInfo);
     setListFavorite(userInfo?.favorites || []);
   };
+
   useEffect(() => {
-    getAllMusicsAPI();
-    getListFavoriteFromLocalStorage();
+    let isAnswer = localStorage.getItem("isAnswerQuestion")
+      ? JSON.parse(localStorage.getItem("isAnswerQuestion"))
+      : false;
+
+    let emotions = localStorage.getItem("emotions")
+      ? JSON.parse(localStorage.getItem("emotions"))
+      : [];
+
+    setSelectedEmotions(emotions);
+    setIsAnswerQuestion(isAnswer);
+    getAllRankMusicAPI();
   }, []);
+
+  useEffect(() => {
+    getAllMusicsAPI(searchInput);
+    getListFavoriteFromLocalStorage();
+  }, [selectedEmotions]);
 
   useEffect(() => {
     setSelectedSong(listMusics[0]);
@@ -86,24 +139,6 @@ export default function Music() {
   const handleRemoveFromFavorite = async (record) => {
     try {
       const result = await soundAPI.removeFromFavorite({ soundId: record._id });
-      console.log(result);
-
-      localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
-      getListFavoriteFromLocalStorage();
-      toast.success("Remove successfully !");
-    } catch (error) {
-      console.log(error);
-      toast.error("Err. Please try again!");
-    }
-  };
-
-  const handleAddToPlaylistOk = async (record) => {
-    try {
-      const result = await playlistAPI.removeFromFavorite({
-        soundId: record._id,
-      });
-      console.log(result);
-
       localStorage.setItem("userInfo", JSON.stringify(result.userInfo));
       getListFavoriteFromLocalStorage();
       toast.success("Remove successfully !");
@@ -122,13 +157,23 @@ export default function Music() {
     getListFavoriteFromLocalStorage();
   };
 
-  const handleRandom = () => {};
-
   const handleAddToPlaylist = (record) => {
     setIsShowAddToPlaylistDialog(true);
     setSelectedItemToAddToFavorite(record);
   };
 
+  const handleChoseAnswerSuccess = (emotions) => {
+    //call api get list music
+    localStorage.setItem("isAnswerQuestion", JSON.stringify(false));
+    localStorage.setItem("emotions", JSON.stringify(emotions));
+    setIsShowInitialQuestion(false);
+    setSelectedEmotions(emotions);
+  };
+
+  const handleChangeSearchInput = async (e) => {
+    setSearchInput(e.target.value);
+    await getAllMusicsAPI(e.target.value);
+  };
   const columns = [
     {
       title: "#",
@@ -174,14 +219,7 @@ export default function Music() {
         </div>
       ),
     },
-    // {
-    //   title: "Artist",
-    //   dataIndex: "artist",
-    //   key: "artist",
-    //   render: (text, record, index) => (
-    //     <div className={checkActiveRow(index) && "text-[#FFC107]"}>{text}</div>
-    //   ),
-    // },
+
     {
       title: "Time",
       dataIndex: "duration",
@@ -237,43 +275,113 @@ export default function Music() {
   ];
 
   return (
-    <div className="grid grid-cols-3">
-      <div className="col-span-2">
-        <h3 className="font-semibold text-white text-xl mb-2">LIST MUSIC</h3>
-        <Table
-          pagination={false}
-          columns={columns}
-          dataSource={listMusics}
-          onRow={(record, rowIndex) => {
-            return {
-              onClick: (event) => handleRowClick(record), // click row
-            };
-          }}
-        />
-      </div>
-      <div className="col-span-1">
-        <Playing
-          song={selectedSong}
-          onNext={handleMoveNext}
-          onPrevious={handleMovePrevious}
-          isPlay={isPlay}
-          handlePlayPause={() => setIsPlay((pre) => !pre)}
-          onRandom={handleRandom}
-        />
-      </div>
-      <ConfirmDialog
-        isShow={isShowConfirm}
-        onCancel={() => setIsShowConfirm(false)}
-        onSuccess={handleDialogSuccess}
-        item={selectedItemToAddToFavorite}
-      />
+    <div>
+      <div className="grid grid-cols-3 gap-5">
+        <div className="col-span-2">
+          <div className="mb-5">
+            <Carousel autoplay>
+              <div>
+                <img
+                  src="https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/05/d/1/c/3/1670209013634.jpg"
+                  alt=""
+                  className="rounded-lg"
+                />
+              </div>
+              <div>
+                <img
+                  src="https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/01/7/1/b/4/1669880759253.jpg"
+                  alt=""
+                  className="rounded-lg"
+                />
+              </div>
+              <div>
+                <img
+                  src="https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/11/25/8/7/6/1/1669365019048.jpg"
+                  alt=""
+                  className="rounded-lg"
+                />
+              </div>
+            </Carousel>
+          </div>
+          <h3 className="font-semibold text-white text-xl mb-2">LIST MUSIC</h3>
 
-      <AddMusicToPlaylist
-        isShow={isShowAddToPlaylistDialog}
-        onCancel={() => setIsShowAddToPlaylistDialog(false)}
-        onSuccess={handleRemoveFromFavorite}
-        item={selectedItemToAddToFavorite}
-      />
+          <div className="flex  items-center w-[500px] bg-white pl-2 py-1 rounded-lg my-3">
+            <AiOutlineSearch className="text-[30px]" />
+            <input
+              type="text"
+              value={searchInput}
+              placeholder="Seach ..."
+              className="bg-transparent border-0 outline-none text-lg"
+              onChange={handleChangeSearchInput}
+            />
+          </div>
+
+          <Table
+            pagination={false}
+            columns={columns}
+            dataSource={listMusics}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: (event) => handleRowClick(record), // click row
+              };
+            }}
+          />
+        </div>
+        {listMusics.length >= 0 ? (
+          <div className="col-span-1">
+            <Playing
+              song={selectedSong}
+              onNext={handleMoveNext}
+              onPrevious={handleMovePrevious}
+              isPlay={isPlay}
+              handlePlayPause={() => setIsPlay((pre) => !pre)}
+            />
+            <div className="ml-10 mt-5">
+              <h4 className="text-white text-[20px] mb-4 font-header font-medium">
+                Top hit
+              </h4>
+              <div className="flex flex-col gap-3">
+                {listRank.map((item) => {
+                  return (
+                    <div className="flex gap-2 text-white">
+                      <img
+                        src={item.image}
+                        className="w-10 h-10 object-cover rounded-lg"
+                        alt=""
+                      />
+                      <div>
+                        <p className="text-md">{item.name}</p>
+                        <p className="text-xs text-[#d8d8d8]">{item.artist}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ) : null}
+
+        <ConfirmDialog
+          isShow={isShowConfirm}
+          onCancel={() => setIsShowConfirm(false)}
+          onSuccess={handleDialogSuccess}
+          item={selectedItemToAddToFavorite}
+        />
+
+        <AddMusicToPlaylist
+          isShow={isShowAddToPlaylistDialog}
+          onCancel={() => setIsShowAddToPlaylistDialog(false)}
+          onSuccess={handleRemoveFromFavorite}
+          item={selectedItemToAddToFavorite}
+        />
+        {isAnswerQuestion ? (
+          <InitialEmotion
+            isShow={isShowInitialQuestion}
+            onCancel={() => setIsShowInitialQuestion(false)}
+            onOk={handleChoseAnswerSuccess}
+          />
+        ) : null}
+      </div>
     </div>
   );
 }

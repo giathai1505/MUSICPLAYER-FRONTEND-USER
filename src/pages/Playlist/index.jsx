@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BsPlusLg } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import playlistAPI from "../../api/playlistAPI";
+import { ee } from "../../components/header/Header";
 import AddPlaylistDialog from "./AddPlaylistDialog";
 
 const listColor = [
@@ -61,7 +62,7 @@ const Playlist = () => {
         );
       })}
       <div
-        className=" bg-primary h-[200px] flex items-center justify-center rounded-lg cursor-pointer opacity-60"
+        className="bg-secondary h-[200px] flex items-center justify-center rounded-lg opacity-40 cursor-pointer"
         onClick={() => setOpenAddPlaylistDialog(true)}
       >
         <BsPlusLg className="text-[30px] text-white opacity-100" />
