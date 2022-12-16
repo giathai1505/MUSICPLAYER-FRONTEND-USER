@@ -24,6 +24,11 @@ class SoundAPI {
     return request.post(url, params);
   };
 
+  getAllMusic = (params) => {
+    const url = "/sound/musics-admin";
+    return request.post(url, params);
+  };
+
   getListRank = (params) => {
     const url = "/sound/musics-ranked";
     return request.post(url, params);
