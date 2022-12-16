@@ -54,10 +54,11 @@ export default function Register() {
         localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
         toast.success('Login Successfully!');
         navigate('/music');
+      } else {
+        toast.error('Login failed!');
       }
-      toast.error('Login failed!');
     } catch (error) {
-      toast.error(error.message);
+      // toast.error(error.message);
     }
   };
 

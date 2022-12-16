@@ -47,8 +47,9 @@ export default function Login() {
         localStorage.setItem('accessToken', JSON.stringify(result.accessToken));
         toast.success('Login Successfully!');
         navigate('/music');
+      } else {
+        toast.error('Login failed!');
       }
-      toast.error('Login failed!');
     } catch (error) {
       toast.error(error.message);
     }

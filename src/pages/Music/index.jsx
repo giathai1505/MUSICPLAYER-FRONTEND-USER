@@ -68,12 +68,21 @@ export default function Music() {
 
   const getAllMusicsAPI = async (text) => {
     try {
-      const result = await soundAPI.getListMusic({
-        emotionIds: selectedEmotions,
-        name: text,
-      });
-      if (result.musics) {
-        setListMusics(result.musics);
+      if (selectedEmotions.length !== 0) {
+        const result = await soundAPI.getListMusic({
+          emotionIds: selectedEmotions,
+          name: text,
+        });
+        if (result.musics) {
+          setListMusics(result.musics);
+        }
+      } else {
+        const result = await soundAPI.getAllMusic({
+          name: text,
+        });
+        if (result.musics) {
+          setListMusics(result.musics);
+        }
       }
     } catch (error) {
       console.log('login error:', error);
