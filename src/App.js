@@ -43,8 +43,8 @@ function App() {
           element={
             <PrivateRoute>
               <DefaultLayout>
-              <Favorite />
-            </DefaultLayout>
+                <Favorite />
+              </DefaultLayout>
             </PrivateRoute>
           }
         />
@@ -61,8 +61,8 @@ function App() {
           element={
             <PrivateRoute>
               <DefaultLayout>
-              <Profile />
-            </DefaultLayout>
+                <Profile />
+              </DefaultLayout>
             </PrivateRoute>
           }
         />
@@ -71,8 +71,8 @@ function App() {
           element={
             <PrivateRoute>
               <DefaultLayout>
-              <Playlist />
-            </DefaultLayout>
+                <Playlist />
+              </DefaultLayout>
             </PrivateRoute>
           }
         />
@@ -82,8 +82,8 @@ function App() {
           element={
             <PrivateRoute>
               <DefaultLayout>
-              <DetailPlaylist />
-            </DefaultLayout>
+                <DetailPlaylist />
+              </DefaultLayout>
             </PrivateRoute>
           }
         />
@@ -92,8 +92,8 @@ function App() {
           element={
             <PrivateRoute>
               <DefaultLayout>
-              <Timer />
-            </DefaultLayout>
+                <Timer />
+              </DefaultLayout>
             </PrivateRoute>
           }
         />

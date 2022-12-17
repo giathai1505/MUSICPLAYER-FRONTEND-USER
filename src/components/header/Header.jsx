@@ -66,7 +66,7 @@ export default function Header() {
           setMinute(59);
         }
       }
-    }, 1000);
+    }, 60000);
 
     return () => {
       clearInterval(countRef.current);
