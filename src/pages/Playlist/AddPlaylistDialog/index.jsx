@@ -11,7 +11,7 @@ import useImageUpload from "../../../hooks/useUpLoadFile.js";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Enter your full name"),
-  description: Yup.string().required("Enter your user name"),
+  description: Yup.string().required("Enter description"),
 });
 
 const initialValues = {
