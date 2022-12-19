@@ -1,6 +1,6 @@
-import { Modal } from 'antd';
-import React, { useEffect, useState } from 'react';
-import questionAPI from '../../../api/question.js';
+import { Modal } from "antd";
+import React, { useEffect, useState } from "react";
+import questionAPI from "../../../api/question.js";
 
 const InitialEmotion = ({ isShow, onOk, onCancel }) => {
   const [question, setQuestion] = useState({});
@@ -8,10 +8,9 @@ const InitialEmotion = ({ isShow, onOk, onCancel }) => {
 
   const getRandomQuestion = async () => {
     try {
-      if (localStorage.getItem('accessToken')) {
-        const result = await questionAPI.randomQuestion();
-        setQuestion(result.question);
-      }
+      const result = await questionAPI.randomQuestion();
+      console.log(result);
+      setQuestion(result.question);
     } catch (error) {
       console.log(error);
     }
@@ -33,23 +32,24 @@ const InitialEmotion = ({ isShow, onOk, onCancel }) => {
   };
 
   const handleCloseForm = () => {
+    localStorage.setItem("isAnswerQuestion", JSON.stringify(false));
     onCancel();
   };
 
   return (
     <Modal
-      title=''
-      className='w-[800px]'
+      title=""
+      className="w-[800px]"
       open={isShow}
       onOk={onOk}
       onCancel={handleCloseForm}
       footer={null}
     >
       <div>
-        <h3 className='mb-4 font-header flex justify-center text-xl'>
+        <h3 className="mb-4 font-header flex justify-center text-xl">
           {question.content}
         </h3>
-        <div className='flex flex-wrap gap-2'>
+        <div className="flex flex-wrap gap-2">
           {question.emotions
             ? question?.emotions.map((item) => {
                 return (
@@ -58,8 +58,8 @@ const InitialEmotion = ({ isShow, onOk, onCancel }) => {
                       listSelectEmotion.findIndex(
                         (element) => element === item._id
                       ) > -1
-                        ? 'bg-primary text-white'
-                        : ''
+                        ? "bg-primary text-white"
+                        : ""
                     }`}
                     onClick={() => handleUpdateListSelectedEmotion(item._id)}
                   >
@@ -69,10 +69,10 @@ const InitialEmotion = ({ isShow, onOk, onCancel }) => {
               })
             : null}
         </div>
-        <div className='flex justify-end mt-2'>
+        <div className="flex justify-end mt-2">
           <button
             onClick={() => onOk(listSelectEmotion)}
-            className='flex justify-end bg-primary text-white px-3 py-1 rounded-lg'
+            className="flex justify-end bg-primary text-white px-3 py-1 rounded-lg"
             disabled={listSelectEmotion.length <= 0}
           >
             Send

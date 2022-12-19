@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
-
-import LoginDialog from "./LoginDialog";
+import LoginDialog from "../LoginDialog";
 
 const PrivateRoute = ({ children }) => {
   const [isShow, setIsShow] = useState(true);

@@ -13,11 +13,16 @@ import Profile from "./pages/Profile";
 import Playlist from "./pages/Playlist";
 import DetailPlaylist from "./pages/DetailPlaylist";
 import Timer from "./layout/timer/Timer";
-import { useEffect } from "react";
 import ChangePassword from "./pages/Auth/changePassword/ChangePassword";
+import { useEffect } from "react";
+import { useBeforeunload } from "react-beforeunload";
 
 function App() {
   document.title = "Melody for emotion";
+
+  useBeforeunload((event) => {
+    localStorage.setItem("isAnswerQuestion", JSON.stringify(true));
+  });
 
   return (
     <div className="App">
@@ -41,11 +46,9 @@ function App() {
         <Route
           path="/favorite"
           element={
-            <PrivateRoute>
-              <DefaultLayout>
-                <Favorite />
-              </DefaultLayout>
-            </PrivateRoute>
+            <DefaultLayout>
+              <Favorite />
+            </DefaultLayout>
           }
         />
         <Route
@@ -59,21 +62,17 @@ function App() {
         <Route
           path="/profile"
           element={
-            <PrivateRoute>
-              <DefaultLayout>
-                <Profile />
-              </DefaultLayout>
-            </PrivateRoute>
+            <DefaultLayout>
+              <Profile />
+            </DefaultLayout>
           }
         />
         <Route
           path="/playlist"
           element={
-            <PrivateRoute>
-              <DefaultLayout>
-                <Playlist />
-              </DefaultLayout>
-            </PrivateRoute>
+            <DefaultLayout>
+              <Playlist />
+            </DefaultLayout>
           }
         />
 

@@ -10,14 +10,19 @@ import ConfirmDialog from "../Music/ConfirmDialog";
 import Dialog from "../../components/ConfirmDialog";
 import { toast } from "react-toastify";
 import { ee } from "../../components/header/Header";
+import { useNavigate } from "react-router-dom";
+import { isLogin } from "../../assets/function/isLogin";
+import LoginDialog from "../../components/LoginDialog";
 
 export default function Favorite() {
+  const navigate = useNavigate();
   const [listMusics, setListMusics] = useState([]);
   const [selectedSong, setSelectedSong] = useState();
   const [isShowConfirm, setIsShowConfirm] = useState(false);
   const [selectedItemToAddToFavorite, setSelectedItemToAddToFavorite] =
     useState({});
   const [isPlay, setIsPlay] = useState(false);
+  const [isShowLoginDialog, setIsShowLoginDialog] = useState(false);
 
   ee.on("message", function (text) {
     if (isPlay) {
@@ -32,6 +37,12 @@ export default function Favorite() {
     curIndex = curIndex === listMusics.length - 1 ? 0 : ++curIndex;
     setSelectedSong(listMusics[curIndex]);
   };
+
+  useEffect(() => {
+    if (isLogin()) {
+      setIsShowLoginDialog(true);
+    }
+  }, []);
 
   const handleMovePrevious = () => {
     let curIndex = listMusics.findIndex(
@@ -191,6 +202,11 @@ export default function Favorite() {
         message={`Do you want to remove " ${selectedItemToAddToFavorite.name} " from your favorite list?`}
         onCancel={() => setIsShowConfirm(false)}
         onSuccess={handleRemoveFromFavorite}
+      />
+      <LoginDialog
+        isShow={isShowLoginDialog}
+        onCancel={() => setIsShowLoginDialog(false)}
+        onSuccess={() => navigate("/login")}
       />
     </div>
   );

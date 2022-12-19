@@ -122,9 +122,9 @@ export default function Header() {
               </div>
             </div>
           ) : (
-            <div className={cx("authen")}>
+            <div className="">
               <Link to="/login" className={cx("btn-login")}>
-                Login
+                Sign in
               </Link>
             </div>
           )}
