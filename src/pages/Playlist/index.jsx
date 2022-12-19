@@ -34,7 +34,7 @@ const Playlist = () => {
   };
 
   useEffect(() => {
-    if (isLogin()) {
+    if (!isLogin()) {
       setIsShowLoginDialog(true);
     }
     getListPlaylist();

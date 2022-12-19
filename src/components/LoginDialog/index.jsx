@@ -8,7 +8,7 @@ const LoginDialog = ({ isShow, onCancel, onSuccess }) => {
   return (
     <Modal
       title={""}
-      open={true}
+      open={isShow}
       onOk={onSuccess}
       onCancel={() => navigate(-1)}
       footer={null}

@@ -39,7 +39,9 @@ export default function Favorite() {
   };
 
   useEffect(() => {
-    if (isLogin()) {
+    const IsLogin = isLogin();
+    console.log(!IsLogin);
+    if (!IsLogin) {
       setIsShowLoginDialog(true);
     }
   }, []);

@@ -10,7 +10,7 @@ import FormikControl from "../../../components/formikCustom/FormikControl.js";
 import useImageUpload from "../../../hooks/useUpLoadFile.js";
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Enter your full name"),
+  name: Yup.string().required("Enter your playlist name"),
   description: Yup.string().required("Enter description"),
 });
 
