@@ -1,18 +1,18 @@
-import { Modal } from 'antd';
-import { Form, Formik } from 'formik';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
-import * as Yup from 'yup';
-import authAPI from '../../../api/authAPI.js';
-import playlistAPI from '../../../api/playlistAPI.js';
-import FormikControl from '../../../components/formikCustom/FormikControl.js';
+import { Modal } from "antd";
+import { Form, Formik } from "formik";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import authAPI from "../../../api/authAPI.js";
+import playlistAPI from "../../../api/playlistAPI.js";
+import FormikControl from "../../../components/formikCustom/FormikControl.js";
 
 const validationSchema = Yup.object({
-  playlistId: Yup.string().required('Enter your full name'),
+  playlistId: Yup.string().required("Please select playlist"),
 });
 
 const initialValues = {
-  playlistId: '',
+  playlistId: "",
 };
 
 const AddMusicToPlaylist = ({ isShow, onOk, onCancel, item }) => {
@@ -20,7 +20,7 @@ const AddMusicToPlaylist = ({ isShow, onOk, onCancel, item }) => {
 
   const getListPlaylist = async () => {
     try {
-      if (localStorage.getItem('accessToken')) {
+      if (localStorage.getItem("accessToken")) {
         const result = await playlistAPI.getListPlaylist();
 
         //format lại list playlist như là select
@@ -49,7 +49,7 @@ const AddMusicToPlaylist = ({ isShow, onOk, onCancel, item }) => {
     try {
       const result = await playlistAPI.addMusicToPlaylist(newValues);
       if (result.success) {
-        toast.success('Add to playlist successfully!');
+        toast.success("Add to playlist successfully!");
         resetForm();
         onOk();
       } else {
@@ -67,11 +67,11 @@ const AddMusicToPlaylist = ({ isShow, onOk, onCancel, item }) => {
   return (
     <Modal
       title={
-        <div className='text-[20px] flex justify-center font-header'>
+        <div className="text-[20px] flex justify-center font-header">
           Add Song to Playlist
         </div>
       }
-      className='w-[800px]'
+      className="w-[800px]"
       open={isShow}
       onOk={onOk}
       onCancel={handleCloseForm}
@@ -85,21 +85,21 @@ const AddMusicToPlaylist = ({ isShow, onOk, onCancel, item }) => {
       >
         <Form>
           <FormikControl
-            control='select'
-            label='Playlist'
-            name='playlistId'
+            control="select"
+            label="Playlist"
+            name="playlistId"
             options={listPlaylist}
           />
-          <div className='flex gap-2 items-center justify-end mr-5'>
+          <div className="flex gap-2 items-center justify-end mr-5">
             <span
-              className='bg-white border border-solid border-black text-black cursor-pointer rounded select-none px-4 py-2'
+              className="bg-white border border-solid border-black text-black cursor-pointer rounded select-none px-4 py-2"
               onClick={handleCloseForm}
             >
               Cancel
             </span>
             <button
-              type='submit'
-              className='bg-primary text-white rounded px-4 py-2'
+              type="submit"
+              className="bg-primary text-white rounded px-4 py-2"
             >
               Save
             </button>
