@@ -32,7 +32,7 @@ export default function Sidebar() {
           alt="logo"
           className="w-[100px]"
         ></img>
-        <p className="text-white">Melody for emotion</p>
+        <p className="text-white text-[16px]">Melody for emotion</p>
       </div>
       <div className={cx("inner")}>
         <div className="flex flex-col text-white">

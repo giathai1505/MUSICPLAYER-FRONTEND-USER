@@ -66,11 +66,11 @@ export default function Music() {
     setSelectedSong(listMusics[curIndex]);
   };
 
-  const getAllMusicsAPI = async (text) => {
+  const getAllMusicsAPI = async (text, emotion = true) => {
     try {
       if (selectedEmotions.length !== 0) {
         const result = await soundAPI.getListMusic({
-          emotionIds: selectedEmotions,
+          emotionIds: emotion ? selectedEmotions : null,
           name: text,
         });
         if (result.musics) {
@@ -89,6 +89,8 @@ export default function Music() {
     }
   };
 
+  console.log("==========", listMusics);
+
   const getAllRankMusicAPI = async (text) => {
     try {
       const result = await soundAPI.getListRank({});
@@ -100,6 +102,10 @@ export default function Music() {
       console.log("login error:", error);
     }
   };
+
+  // useEffect(() => {
+  //   getAllMusicsAPI(searchInput, false);
+  // }, [searchInput]);
 
   const getListFavoriteFromLocalStorage = () => {
     let userInfo = localStorage.getItem("userInfo")
@@ -180,7 +186,11 @@ export default function Music() {
 
   const handleChangeSearchInput = async (e) => {
     setSearchInput(e.target.value);
-    await getAllMusicsAPI(e.target.value);
+    if (e.target.value !== "") {
+      await getAllMusicsAPI(e.target.value, false);
+    } else {
+      await getAllMusicsAPI(e.target.value);
+    }
   };
   const columns = [
     {
