@@ -27,7 +27,9 @@ export default function ChangePassword() {
         confirmPassword: "",
       },
       validationSchema: Yup.object({
-        password: Yup.string().required("Please enter your password"),
+        password: Yup.string()
+          .required("Please enter your password")
+          .min(8, "Password must be greater than 8 characters"),
         confirmPassword: Yup.string()
           .required("Please enter your confirm password!")
           .oneOf([Yup.ref("password"), null], "password must match"),

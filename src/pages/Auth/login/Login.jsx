@@ -23,7 +23,9 @@ let initialValues = {
 
 const validationSchema = Yup.object({
   email: Yup.string().email().required("Enter your email"),
-  password: Yup.string().required("Enter your password"),
+  password: Yup.string()
+    .required("Enter your password")
+    .min(8, "Password must be greater than 8 characters"),
 });
 
 export default function Login() {
