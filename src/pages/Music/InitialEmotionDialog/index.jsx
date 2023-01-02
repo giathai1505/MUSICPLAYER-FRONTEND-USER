@@ -1,32 +1,50 @@
 import { Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import questionAPI from "../../../api/question.js";
+import Question from "./Question/index.jsx";
 
 const InitialEmotion = ({ isShow, onOk, onCancel }) => {
   const [question, setQuestion] = useState({});
   const [listSelectEmotion, setListSelectEmotion] = useState([]);
+  const [numberOfQuestion, setNumberOfQuestion] = useState(0);
+  const [question2, setQuestion2] = useState({});
+  const [listSelectEmotion2, setListSelectEmotion2] = useState([]);
 
-  const getRandomQuestion = async () => {
+  const getQuestionLevel1 = async () => {
     try {
-      const result = await questionAPI.randomQuestion();
-      console.log(result);
+      const result = await questionAPI.getQuestionLevel1();
       setQuestion(result.question);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getQuestionLevel2 = async (params) => {
+    try {
+      const result = await questionAPI.getQuestionLevel2(params);
+      setQuestion2(result.question);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    getRandomQuestion();
+    getQuestionLevel1();
   }, []);
 
   const handleUpdateListSelectedEmotion = (emotionID) => {
-    if (!listSelectEmotion.includes(emotionID)) {
-      setListSelectEmotion((pre) => [...pre, emotionID]);
+    if (numberOfQuestion === 0) {
+      setListSelectEmotion([emotionID]);
     } else {
-      const index = listSelectEmotion.indexOf(emotionID);
-      if (index > -1) {
-        setListSelectEmotion((pre) => pre.filter((item) => item !== emotionID));
+      if (!listSelectEmotion2.includes(emotionID)) {
+        setListSelectEmotion2((pre) => [...pre, emotionID]);
+      } else {
+        const index = listSelectEmotion2.indexOf(emotionID);
+        if (index > -1) {
+          setListSelectEmotion2((pre) =>
+            pre.filter((item) => item !== emotionID)
+          );
+        }
       }
     }
   };
@@ -34,6 +52,18 @@ const InitialEmotion = ({ isShow, onOk, onCancel }) => {
   const handleCloseForm = () => {
     localStorage.setItem("isAnswerQuestion", JSON.stringify(false));
     onCancel();
+  };
+
+  const handleSend = () => {
+    if (numberOfQuestion === 0) {
+      getQuestionLevel2({
+        parentId: question._id,
+        answerParentId: listSelectEmotion[0],
+      });
+      setNumberOfQuestion(1);
+    } else {
+      onOk(listSelectEmotion2);
+    }
   };
 
   return (
@@ -45,39 +75,31 @@ const InitialEmotion = ({ isShow, onOk, onCancel }) => {
       onCancel={handleCloseForm}
       footer={null}
     >
-      <div>
-        <h3 className="mb-4 font-header flex justify-center text-xl">
-          {question.content}
-        </h3>
-        <div className="flex flex-wrap gap-2">
-          {question.emotions
-            ? question?.emotions.map((item) => {
-                return (
-                  <span
-                    className={`px-3 py-1 rounded-2xl border border-solid cursor-pointer hover:bg-primary hover:text-white ${
-                      listSelectEmotion.findIndex(
-                        (element) => element === item._id
-                      ) > -1
-                        ? "bg-primary text-white"
-                        : ""
-                    }`}
-                    onClick={() => handleUpdateListSelectedEmotion(item._id)}
-                  >
-                    {item.name}
-                  </span>
-                );
-              })
-            : null}
-        </div>
-        <div className="flex justify-end mt-2">
-          <button
-            onClick={() => onOk(listSelectEmotion)}
-            className="flex justify-end bg-primary text-white px-3 py-1 rounded-lg"
-            disabled={listSelectEmotion.length <= 0}
-          >
-            Send
-          </button>
-        </div>
+      {numberOfQuestion === 0 ? (
+        <Question
+          question={question}
+          listSelectEmotion={listSelectEmotion}
+          handleUpdateListSelectedEmotion={(emotionID) =>
+            handleUpdateListSelectedEmotion(emotionID)
+          }
+        />
+      ) : (
+        <Question
+          question={question2}
+          listSelectEmotion={listSelectEmotion2}
+          handleUpdateListSelectedEmotion={(emotionID) =>
+            handleUpdateListSelectedEmotion(emotionID)
+          }
+        />
+      )}
+      <div className="flex justify-end mt-2">
+        <button
+          onClick={handleSend}
+          className="flex justify-end bg-primary text-white px-3 py-1 rounded-lg"
+          disabled={listSelectEmotion.length <= 0}
+        >
+          Send
+        </button>
       </div>
     </Modal>
   );

@@ -6,27 +6,11 @@ import { ConvertSecondToMinute } from "../../assets/function/string";
 import ConfirmDialog from "./ConfirmDialog";
 import soundAPI from "../../api/soundAPI";
 import { toast } from "react-toastify";
-import { Slide } from "react-slideshow-image";
 import { BsPlusLg } from "react-icons/bs";
 import AddMusicToPlaylist from "./AddToPlaylistDialog";
 import InitialEmotion from "./InitialEmotionDialog";
-import { Carousel, Spin, Table } from "antd";
+import { Carousel, Table } from "antd";
 import { ee } from "../../components/header/Header";
-
-const slideImages = [
-  {
-    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/05/d/1/c/3/1670209013634.jpg",
-    caption: "Slide 1",
-  },
-  {
-    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/12/01/7/1/b/4/1669880759253.jpg",
-    caption: "Slide 2",
-  },
-  {
-    url: "https://avatar-ex-swe.nixcdn.com/slideshow-web/2022/11/25/8/7/6/1/1669365019048.jpg",
-    caption: "Slide 3",
-  },
-];
 
 export default function Music() {
   const [listMusics, setListMusics] = useState([]);
@@ -89,8 +73,6 @@ export default function Music() {
     }
   };
 
-  console.log("==========", listMusics);
-
   const getAllRankMusicAPI = async (text) => {
     try {
       const result = await soundAPI.getListRank({});
@@ -102,10 +84,6 @@ export default function Music() {
       console.log("login error:", error);
     }
   };
-
-  // useEffect(() => {
-  //   getAllMusicsAPI(searchInput, false);
-  // }, [searchInput]);
 
   const getListFavoriteFromLocalStorage = () => {
     let userInfo = localStorage.getItem("userInfo")
