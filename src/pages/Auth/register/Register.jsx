@@ -20,13 +20,13 @@ let initialValues = {
 };
 
 const validationSchema = Yup.object({
-  username: Yup.string().required("Enter your username"),
-  email: Yup.string().email().required("Enter your email"),
+  username: Yup.string().required("Please enter your username"),
+  email: Yup.string().email().required("Please enter your email"),
   password: Yup.string()
-    .required("Enter your password")
+    .required("Please enter your password")
     .min(8, "Password must be greater than 8 characters"),
   confirmPassword: Yup.string()
-    .required("Enter your password")
+    .required("Please enter your password")
     .oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 

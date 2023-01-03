@@ -7,8 +7,8 @@ import authAPI from "../../../api/authAPI.js";
 import FormikControl from "../../../components/formikCustom/FormikControl.js";
 
 const validationSchema = Yup.object({
-  oldPassword: Yup.string().required("Enter your old password"),
-  newPassword: Yup.string().required("Enter your new password"),
+  oldPassword: Yup.string().required("Please enter your old password"),
+  newPassword: Yup.string().required("Please enter your new password"),
   confirmNewPassword: Yup.string().oneOf(
     [Yup.ref("newPassword"), null],
     "Passwords must match"

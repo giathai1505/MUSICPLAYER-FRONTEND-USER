@@ -25,11 +25,11 @@ const marriageOptions = [
 ];
 
 const validationSchema = Yup.object({
-  fullName: Yup.string().required("Enter your full name"),
-  username: Yup.string().required("Enter your user name"),
-  gender: Yup.string().required("Enter your gender"),
-  dateOfBirth: Yup.string().required("Enter your date of birth"),
-  maritalStatus: Yup.string().required("Enter your marital status"),
+  fullName: Yup.string().required("Please enter your full name"),
+  username: Yup.string().required("Please enter your user name"),
+  gender: Yup.string().required("Please enter your gender"),
+  dateOfBirth: Yup.string().required("Please enter your date of birth"),
+  maritalStatus: Yup.string().required("Please enter your marital status"),
 });
 
 const EditProfile = ({ isShow, onOk, onCancel, user }) => {
